@@ -1,5 +1,5 @@
 # Camera-Tools-Photomode-For-Watch_Dogs
-This is a tool that allows you to control the camera for Watch_Dogs, and allows you to control many other elements of the Disrupt engine to allow for a definitive "picture mode". <br /> 
+This is a tool that allows you to control the camera for Watch_Dogs, and allows you to control many other elements of the Disrupt engine to allow for a definitive "picture mode" for taking screenshots. <br /> 
 The files in Binaries go in your gamedir/bin where your Watch_Dogs executable (.exe) is. 
 # Important Notes
 • This was hard-coded for the current latest version of Watch_Dogs for Ubisoft Connect/Uplay. This will not work with any other version of the game. <br /> 
