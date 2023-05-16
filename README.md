@@ -15,5 +15,5 @@ The files in Binaries go in your gamedir/bin where your Watch_Dogs executable (.
 # Acknowledgments
 This project uses a function coded by github.com/yubie-re in order to allow me to change read/write protections in certain memory regions protected by the game's DRM. 
 # Extra
-Super Rendering Demo: https://youtu.be/oghZN1t39YM
-Join The Watch_Dogs Modding Discord: https://discord.gg/4TFmTnunzv <br />
+Super Rendering Demo: https://youtu.be/oghZN1t39YM  <br />
+Join The Watch_Dogs Modding Discord: https://discord.gg/4TFmTnunzv
