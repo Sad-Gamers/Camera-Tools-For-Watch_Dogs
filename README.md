@@ -11,7 +11,7 @@ The files in Binaries go in your gamedir/bin where your Watch_Dogs executable (.
 • Control the time of day as well as the weather preset. <br /> 
 • Freeze and slow down the game. <br /> 
 • UI/HUD Toggle.  <br /> 
-• Super Rendering Toggle, which renders the game at an extreme quality only seen in pre rendered cutscene.  This toggle assumes you are already running the game on Ultra settings.
+• Super Rendering Toggle, which renders the game at an extreme quality only seen in pre rendered cutscenes. This toggle assumes you are already running the game on Ultra settings.
 # Acknowledgments
 This project uses a function coded by github.com/yubie-re in order to allow me to change read/write protections in certain memory regions protected by the game's DRM. 
 # Extra
