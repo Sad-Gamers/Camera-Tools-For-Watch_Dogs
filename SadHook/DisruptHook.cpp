@@ -228,9 +228,7 @@ void DisruptHook::DisruptHookUpdate() {
 					DWORD64 pVirtualPage = SadMemEdit::AllocateMemory(128); //Allocate memory to write our custom function there.
 
 					/*
-					* Define our x86 assembly function, which makes the game read the current speed as 1e-8 which
-					* is a very low value.
-					* A value of zero sometimes results in a crash as well as broken animations/physics.
+					* Define our x86 assembly function, which makes the game read the current speed as a slower value.
 					*/
 					SadMemEdit::WriteBytes({ 0x51,								//push rcx
 						0x48, 0xB9, 0xA6, 0x9B, 0x44, 0x3B, 0x0, 0x0, 0x0, 0x0, //mov rcx,(float)0.003
