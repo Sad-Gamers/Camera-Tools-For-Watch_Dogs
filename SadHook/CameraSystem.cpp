@@ -173,9 +173,8 @@ void CameraSystem::UpdateCamera() {
 				}
 
 				if (GetAsyncKeyState(VK_NUMPAD3)) {
-					\
-						//Decrease FOV, yada yada shit gets funky if too low.
-						if (fCameraFOV > 0.1) fCameraFOV -= 0.003;
+					//Decrease FOV, yada yada shit gets funky if too low.
+					if (fCameraFOV > 0.1) fCameraFOV -= 0.003;
 				}
 
 				if (GetAsyncKeyState(VK_NUMPAD8)) {
