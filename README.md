@@ -10,7 +10,7 @@ The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable
 # Notes for those using the source code in Visual Studio
 ### Apparently since the project does not seem to do this on it's own <br /> 
 • Disable Precompiled Headers under Properties/C++/Precompiled Headers.  <br /> 
-• Set the language standard to "ISO C++17 Standard (std:c++17)" under Properties/C++/Language.  <br /> 
+• Set the language standard to "ISO C++17 Standard" under Properties/C++/Language.  <br /> 
 • Set your runtime library to "Multi-threaded (/MT)" under Properties/C++/Code Generation.  <br />
 • Make sure you are targetting x64 platform.
 # Features
