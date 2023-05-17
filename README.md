@@ -10,7 +10,7 @@ The files in Binaries go in your gamedir/bin where your Watch_Dogs executable (.
 • Disable Precompiled Headers for both DLLs under Properties/Precompiled Headers.  <br /> 
 • If something isn't working, try changing the language standard under Properties/Language.  <br /> 
 • I used "Preview - Features from the Latest C++ Working Draft (/std:c++latest)" as the language standard, however, I am using Visual Studio 2019.  <br /> 
-• Make sure they are for x64 platform. 
+• Make sure you are targetting x64 platform. 
 # Features
 • Control the camera including the field of view and camera roll. <br /> 
 • Control the depth of field, with two modes allowing you to blur near objects and/or objects in the distance. <br /> 
