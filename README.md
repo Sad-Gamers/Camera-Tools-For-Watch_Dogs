@@ -1,16 +1,18 @@
 # Camera-Tools/Photomode For Watch_Dogs
 This is a tool that allows you to control the camera for Watch_Dogs, and allows you to control many other elements of the Disrupt engine to allow for a definitive "picture mode" for taking screenshots. <br /> 
-The files in Binaries go in your gamedir/bin where your Watch_Dogs executable (.exe) is. 
+The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable (.exe) is. 
+# Release Version 1.1
+• Added Support for the latest Steam version of Watch_Dogs.
+• Minor tweaks to the source code and help console.
 # Important Notes
-• This was hard-coded for the current latest version of Watch_Dogs for Ubisoft Connect/Uplay. This will not work with any other version of the game. <br /> 
-• If you have the Watch_Dogs on Steam, backup your original Disrupt_b64.dll, and replace it with the one included in the Binaries Folder. The DLLs don't have any real differences in terms of functionality.  <br /> 
-• If you are using a cracked version of Watch_Dogs, replacing Disrupt_b64.dll may or may not break your crack, as some cracks are included directly in the Disrupt DLL.
+• If you are using a cracked version of Watch_Dogs, this tool will likely not be compatible unless your crack has the same version of Disrupt_b64.dll for Uplay/Steam.  <br /> 
+• The Super Rendering feature may be unstable on lower end computers.
 # Notes for those using the source code in Visual Studio
-### Apparently since the solution files don't seem to do this on their own  <br /> 
-• Disable Precompiled Headers for both DLLs under Properties/Precompiled Headers.  <br /> 
-• If something isn't working, try changing the language standard under Properties/Language.  <br /> 
-• I used "Preview - Features from the Latest C++ Working Draft (/std:c++latest)" as the language standard, however, I am using Visual Studio 2019.  <br /> 
-• Make sure you are targetting x64 platform. 
+### Apparently since the project does not seem to do this on it's own  <br /> 
+• Disable Precompiled Headers for both DLLs under Properties/C++/Precompiled Headers.  <br /> 
+• Set the language standard to "ISO C++17 Standard (std:c++17)" Properties/C++/Language.  <br /> 
+• Set your runtime library to "Multi-threaded (/MT)" under Properties/C++/Code Generation.  <br />
+• Make sure you are targetting x64 platform.
 # Features
 • Control the camera including the field of view and camera roll. <br /> 
 • Control the depth of field, with two modes allowing you to blur near objects and/or objects in the distance. <br /> 
