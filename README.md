@@ -2,7 +2,7 @@
 This is a tool that allows you to control the camera for Watch_Dogs, and allows you to control many other elements of the Disrupt engine to allow for a definitive "picture mode" for taking screenshots. <br /> 
 The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable (.exe) is. 
 # Release Version 1.1
-• Added Support for the latest Steam version of Watch_Dogs.
+• Added Support for the latest Steam version of Watch_Dogs. <br /> 
 • Minor tweaks to the source code and help console.
 # Important Notes
 • If you are using a cracked version of Watch_Dogs, this tool will likely not be compatible unless your crack has the same version of Disrupt_b64.dll for Uplay/Steam.  <br /> 
