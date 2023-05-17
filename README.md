@@ -8,7 +8,7 @@ The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable
 • If you are using a cracked version of Watch_Dogs, this tool will likely not be compatible unless your crack has the same version of Disrupt_b64.dll for Uplay/Steam.  <br /> 
 • The Super Rendering feature may be unstable on lower end computers.
 # Notes for those using the source code in Visual Studio
-### Apparently since the project does not seem to do this on it's own... <br /> 
+### Apparently since the project does not seem to do this on it's own <br /> 
 • Disable Precompiled Headers under Properties/C++/Precompiled Headers.  <br /> 
 • Set the language standard to "ISO C++17 Standard (std:c++17)" under Properties/C++/Language.  <br /> 
 • Set your runtime library to "Multi-threaded (/MT)" under Properties/C++/Code Generation.  <br />
