@@ -8,9 +8,9 @@ The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable
 • If you are using a cracked version of Watch_Dogs, this tool will likely not be compatible unless your crack has the same version of Disrupt_b64.dll for Uplay/Steam.  <br /> 
 • The Super Rendering feature may be unstable on lower end computers.
 # Notes for those using the source code in Visual Studio
-### Apparently since the project does not seem to do this on it's own  <br /> 
-• Disable Precompiled Headers for both DLLs under Properties/C++/Precompiled Headers.  <br /> 
-• Set the language standard to "ISO C++17 Standard (std:c++17)" Properties/C++/Language.  <br /> 
+### Apparently since the project does not seem to do this on it's own <br /> 
+• Disable Precompiled Headers under Properties/C++/Precompiled Headers.  <br /> 
+• Set the language standard to "ISO C++17 Standard" under Properties/C++/Language.  <br /> 
 • Set your runtime library to "Multi-threaded (/MT)" under Properties/C++/Code Generation.  <br />
 • Make sure you are targetting x64 platform.
 # Features
@@ -23,5 +23,5 @@ The files in Binariesx64 go in your gamedir/bin where your Watch_Dogs executable
 # Acknowledgments
 This project uses a function coded by github.com/yubie-re in order to allow me to change read/write protections in certain memory regions protected by the game's DRM. 
 # Extra
-Super Rendering Demo: https://youtu.be/oghZN1t39YM  <br />
+Super Rendering Demo: https://youtu.be/lam_b7vsO3M  <br />
 Join The Watch_Dogs Modding Discord: https://discord.gg/4TFmTnunzv
