@@ -1,0 +1,76 @@
+﻿  CinematicLightingManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\CinematicLightingManager.cpp(208,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Databases.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\Databases.cpp(22,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  dllmain.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\dllmain.cpp(40,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ImGradient.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\ImGradient.cpp(117,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui.cpp(1906,10): error C2006: '#include': expected "FILENAME" or <FILENAME>
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui.cpp(2664,1): warning C4005: 'va_copy': macro redefinition
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui.cpp(2662): message : see previous definition of 'va_copy'
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui.cpp(15744,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_demo.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(146,1): warning C4005: 'IM_NEWLINE': macro redefinition
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(144): message : see previous definition of 'IM_NEWLINE'
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(162,1): warning C4005: 'PRId64': macro redefinition
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(159): message : see previous definition of 'PRId64'
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(163,1): warning C4005: 'PRIu64': macro redefinition
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(160): message : see previous definition of 'PRIu64'
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(180,1): warning C4005: 'IMGUI_CDECL': macro redefinition
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(178): message : see previous definition of 'IMGUI_CDECL'
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_demo.cpp(8563,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_draw.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_draw.cpp(123,10): error C2006: '#include': expected "FILENAME" or <FILENAME>
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_draw.cpp(147,10): error C2006: '#include': expected "FILENAME" or <FILENAME>
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_draw.cpp(4619,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_impl_dx11.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_impl_dx11.cpp(606,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_impl_win32.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_impl_win32.cpp(904,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_tables.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_tables.cpp(4380,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  imgui_widgets.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ext\imgui\imgui_widgets.cpp(8967,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  EntityManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\EntityManager.cpp(81,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  HotKeys.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\HotKeys.cpp(4,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Misc.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\Misc.cpp(93,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  FileManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\FileManager.cpp(45,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  EnvironmentManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\EnvironmentManager.cpp(55,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  RenderConfig.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\RenderConfig.cpp(190,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ResourceManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\ResourceManager.cpp(26,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  CameraManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\CameraManager.cpp(228,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  GridShadingManager.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\GridShadingManager.cpp(25,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
+  Compiling...
+  Actor.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\Actor.cpp(99,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  CinematicLight.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\CinematicLight.cpp(60,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  DXHook.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\DXHook.cpp(150,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Main.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\Main.cpp(61,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  SadGUI.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\SadGUI.cpp(915,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  CameraToolMonitor.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\CameraToolMonitor.cpp(393,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Player.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\Player.cpp(67,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  SlideAnimations.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\SlideAnimations.cpp(106,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  SlideLockEvent.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\SlideLockEvent.cpp(29,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  UserConfig.cpp
+C:\Users\Abdelrahhman Zahran\source\repos\SadGUI\SadGUI\UserConfig.cpp(147,1): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
