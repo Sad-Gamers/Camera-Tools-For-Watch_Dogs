@@ -8,6 +8,8 @@ class CinematicLightingManager
 public:
 	static void InitializeCinematicLights();
 
+	static void LoadCinematicLights();
+
 	static void UpdateAllCinematicLightPositions();
 
 	static void RemoveAllCinematicLights();

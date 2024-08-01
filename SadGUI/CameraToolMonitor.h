@@ -5,9 +5,11 @@ class Monitor
 public:
 	static void MonitorChanges();
 	static void ProccessInput();
+	inline static ULONGLONG TickCountOnUIHide;
 	inline static bool FreeCam;
 	inline static bool TimeStop;
 	inline static bool SlowMo;
+	inline static bool CustomSpeed;
 	inline static bool FreezeRain;
 	inline static bool GridShading;
 	inline static bool HideUI;
@@ -56,4 +58,9 @@ public:
 	inline static bool RemovePlayerHighlight;
 	inline static bool UpdateRenderConfig;
 	inline static bool RevertRenderConfig;
+
+	inline static bool RestoreControl;
+	inline static bool RemoveControl;
+	inline static bool RestoreControlEvent;
+
 };

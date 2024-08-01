@@ -20,9 +20,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
         temp = dllFilePath;
         FileManager::RootPath = temp.substr(0, temp.find_last_of("\\/"));
         ResourceManager::CustomDepload = FileManager::RootPath + "\\Dependencies\\CameraTool\\MoveDepload.dat";
-        FileManager::CustomWLU = FileManager::RootPath + "\\Dependencies\\CameraTool\\wlu_data_world.xml.data.fcb";
+        FileManager::CustomWLU = FileManager::RootPath + "\\Dependencies\\CameraTool\\CinematicLights.xml.data.fcb";
         SadGUI::Font = FileManager::RootPath + "\\Dependencies\\ImGui\\BlenderPro-Book.ttf";
         UserConfig::HotKeyConfigPath = FileManager::RootPath + "\\Dependencies\\User\\Hotkeys.bin";
+        UserConfig::GUIConfigPath = FileManager::RootPath + "\\Dependencies\\User\\GUI.bin";
         UserConfig::HotFixConfigPath = FileManager::RootPath + "\\Dependencies\\User\\HotFixes.bin";
         UserConfig::RenderConfigPath = FileManager::RootPath + "\\Dependencies\\User\\RenderConfig.bin";
         UserConfig::AnimationBookmarksPath = FileManager::RootPath + "\\Dependencies\\User\\AnimationBookmarks.txt";

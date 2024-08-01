@@ -22,6 +22,13 @@ void CinematicLightingManager::InitializeCinematicLights()
 	MuzzleFlash = CinematicLight(1152921504606847148);
 }
 
+void CinematicLightingManager::LoadCinematicLights() {
+	const char* MissionData = "sk_m03";
+	uintptr_t Dummy = 0;
+	uintptr_t MissionDataNomadStringPtr = 0;
+	Misc::MakeNomadString(&MissionDataNomadStringPtr, MissionData);
+	Misc::LoadMissionData(0, &Dummy, &MissionDataNomadStringPtr, &MissionDataNomadStringPtr);
+}
 
 void CinematicLightingManager::PlaceAreaLight()
 {

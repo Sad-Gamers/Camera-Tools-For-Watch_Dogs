@@ -11,7 +11,6 @@ public:
 		DirectX::XMFLOAT3* ManagerRotation, bool MaintainPosition);
 	DirectX::XMFLOAT3 UpdatePosition(DirectX::XMFLOAT3 Position);
 	DirectX::XMFLOAT3 UpdateRotation(DirectX::XMFLOAT3 Position);
-	void GetEntityID();
 	CinematicLight() {
 		EntityID = 0;
 	}

@@ -7,18 +7,21 @@ public:
 	inline static std::string HotKeyConfigPath;
 	inline static std::string HotFixConfigPath;
 	inline static std::string RenderConfigPath;
+	inline static std::string GUIConfigPath;
 	inline static std::string AnimationBookmarksPath;
 	inline static std::string GraphicKitBookmarksPath;
 	inline static std::string CameraData1Path;
 	inline static std::string CameraData2Path;
 
 	static void LoadHotKeys();
+	static void LoadGUIConfig();
 	static void LoadHotFixConfig();
 	static void LoadRenderConfig();
     static void SanatizeHotKeySelection(BYTE SelectedHkey);
     static void SaveAndReloadHotkeys();
     static void SaveRenderConfig();
     static void SaveAndReloadHotFixConfig();
+    static void SaveAndReloadGUIConfig();
 
     static void AddAnimationBookmark(const char* MoveFileName);
     static void RemoveAnimationBookmark(const char* MoveFileName);
@@ -65,5 +68,10 @@ public:
         BYTE SlowMo;
         BYTE HUD;
         BYTE GridShading;
+        BYTE Transition;
     } HotKeyFile, HotKeyFileToSave;
+
+    inline static struct GUIFile {
+        float FontSize;
+    } GUIFile, GUIFileToSave;
 };

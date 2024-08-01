@@ -11,11 +11,8 @@ void EnvironmentManager::Initialize() {
 	MH_EnableHook((LPVOID)(Imagebase + Offsets::ApplySceneParticlePostFx));
 	FreezeRain = false;
 	CurrentWeatherPreset = "Clear";
-	StandardTimeHour = 7;
-	StandardTimeMinute = 45;
-	MilitaryTimeHour = 7;
-	MilitaryTimeMinute = 45;
-	StandardTimeFormat = "AM";
+	MilitaryTimeHour = 0;
+	MilitaryTimeMinute = 0;
 }
 
 uintptr_t EnvironmentManager::GetEnvironmentEventsManager() {
@@ -26,10 +23,38 @@ uintptr_t EnvironmentManager::GetDynamicEnvironmentManager() {
 	return ((*(uintptr_t*)((*(uintptr_t*)(Imagebase + Offsets::CDynamicEnvironmentManager)) + 0x8) + 0x0));
 }
 
-void EnvironmentManager::UpdateTimeOfDay() {
+void EnvironmentManager::SetTimeOfDay() {
 	if (GetDynamicEnvironmentManager()) {
 		SetScriptedTimeOfDay(GetDynamicEnvironmentManager(), MilitaryTimeHour, MilitaryTimeMinute);
 	}
+}
+
+void EnvironmentManager::UpdateTimeOfDay() {
+	if (GetDynamicEnvironmentManager()) {
+		float Time = *(float*)(GetDynamicEnvironmentManager() + 0x758) / 3600.0f;
+		float Hour = std::floor(Time);
+		float Minute = (Time - Hour) * 60.0f;
+		MilitaryTimeHour = Hour;
+		MilitaryTimeMinute = Minute;
+	}
+}
+
+void EnvironmentManager::IncreaseTimeOfDay(float DeltaTime) {
+	if (GetDynamicEnvironmentManager()) {
+		float Time = *(float*)(GetDynamicEnvironmentManager() + 0x758);
+		Time += 600.0f * DeltaTime;
+		*(float*)(GetDynamicEnvironmentManager() + 0x758) = Time;
+	}
+	UpdateTimeOfDay();
+}
+
+void EnvironmentManager::DecreaseTimeOfDay(float DeltaTime) {
+	if (GetDynamicEnvironmentManager()) {
+		float Time = *(float*)(GetDynamicEnvironmentManager() + 0x758);
+		Time -= 600.0f * DeltaTime;
+		*(float*)(GetDynamicEnvironmentManager() + 0x758) = Time;
+	}
+	UpdateTimeOfDay();
 }
 
 void EnvironmentManager::UpdateWeatherPreset() {

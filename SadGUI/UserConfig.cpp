@@ -1,6 +1,7 @@
 #include "Databases.h"
 #include "UserConfig.h"
 #include "HotKeys.h"
+#include "SadGUI.h"
 #include "SlideAnimations.h"
 #include "CameraToolMonitor.h"
 #include "CameraManager.h"
@@ -20,6 +21,7 @@ void UserConfig::LoadRenderConfig() {
         fclose(UserRenderConfig);
     }
 }
+
 void UserConfig::LoadHotKeys() {
 	FILE* UserHotkeys = fopen(HotKeyConfigPath.c_str(), "rb");
 	if (UserHotkeys) {
@@ -32,12 +34,14 @@ void UserConfig::LoadHotKeys() {
         HotKeys::EditorSlowMo = Databases::HotKeys[HotKeyFile.SlowMo];
         HotKeys::EditorHUD = Databases::HotKeys[HotKeyFile.HUD];
         HotKeys::EditorGridShading = Databases::HotKeys[HotKeyFile.GridShading];
+        HotKeys::EditorTransition = Databases::HotKeys[HotKeyFile.Transition];
         HotKeys::GUI = Databases::HotKeyCodes[HotKeyFile.GUI];
         HotKeys::FreeCam = Databases::HotKeyCodes[HotKeyFile.FreeCam];
         HotKeys::TimeStop = Databases::HotKeyCodes[HotKeyFile.TimeStop];
         HotKeys::SlowMo = Databases::HotKeyCodes[HotKeyFile.SlowMo];
         HotKeys::HUD = Databases::HotKeyCodes[HotKeyFile.HUD];
         HotKeys::GridShading = Databases::HotKeyCodes[HotKeyFile.GridShading];
+        HotKeys::Transition = Databases::HotKeyCodes[HotKeyFile.Transition];
 	}
 	else
 	{
@@ -47,14 +51,45 @@ void UserConfig::LoadHotKeys() {
         HotKeys::EditorTimeStop = Databases::HotKeys[10];
         HotKeys::EditorHUD = Databases::HotKeys[9];
         HotKeys::EditorGridShading = Databases::HotKeys[13];
+        HotKeys::EditorTransition = Databases::HotKeys[7];
         HotKeys::GUI = Databases::HotKeyCodes[1];
         HotKeys::FreeCam = Databases::HotKeyCodes[2];
         HotKeys::TimeStop = Databases::HotKeyCodes[11];
         HotKeys::SlowMo = Databases::HotKeyCodes[10];
         HotKeys::HUD = Databases::HotKeyCodes[9];
-        HotKeys::GridShading = Databases::HotKeyCodes[13];
-        HotKeyFileToSave = {1, 2, 9, 10, 8, 13};
+        HotKeys::Transition = Databases::HotKeyCodes[7];
+        HotKeyFileToSave = {1, 2, 9, 10, 8, 13, 7};
 	}
+}
+
+void UserConfig::LoadGUIConfig() {
+    FILE* GUIConfig = fopen(GUIConfigPath.c_str(), "rb");
+    if (GUIConfig) {
+        fread(&GUIFile, sizeof(GUIFile), 1, GUIConfig);
+        fclose(GUIConfig);
+        if (GUIFile.FontSize > 30.0f) {
+            GUIFile.FontSize = 30.0f;
+        }
+        if (GUIFile.FontSize < 15.0f) {
+            GUIFile.FontSize = 15.0f;
+        }
+        GUIFileToSave = GUIFile;
+        SadGUI::FontSize = GUIFile.FontSize;
+    }
+    else
+    {
+        GUIFile.FontSize = 18.0f;
+        GUIFileToSave = GUIFile;
+        SadGUI::FontSize = GUIFile.FontSize;
+    }
+    SadGUI::ReloadFont = true;
+}
+
+void UserConfig::SaveAndReloadGUIConfig() {
+    FILE* UserGUIConfig = fopen(GUIConfigPath.c_str(), "wb");
+    fwrite(&GUIFileToSave, sizeof(GUIFileToSave), 1, UserGUIConfig);
+    fclose(UserGUIConfig);
+    LoadGUIConfig();
 }
 
 void UserConfig::LoadHotFixConfig() {
@@ -62,6 +97,12 @@ void UserConfig::LoadHotFixConfig() {
     if (UserHotFixConfig) {
         fread(&HotFixesFile, sizeof(HotFixesFile), 1, UserHotFixConfig);
         fclose(UserHotFixConfig);
+        if (HotFixesFile.FOVMultiplier > 1.45) {
+            HotFixesFile.FOVMultiplier = 1.45;
+        }
+        if (HotFixesFile.FOVMultiplier < 0.75) {
+            HotFixesFile.FOVMultiplier = 0.75;
+        }
         HotFixesFileToSave = HotFixesFile;
         SlideAnimations::PatchBlowBack = HotFixesFile.BlowBack;
         SlideAnimations::SlideLocking = HotFixesFile.SlideLocking;
@@ -90,6 +131,12 @@ void UserConfig::SaveAndReloadHotkeys() {
 
 void UserConfig::SaveAndReloadHotFixConfig() {
     FILE* UserHotFixConfig = fopen(HotFixConfigPath.c_str(), "wb");
+    if (HotFixesFileToSave.FOVMultiplier > 1.45) {
+        HotFixesFileToSave.FOVMultiplier = 1.45;
+    }
+    if (HotFixesFileToSave.FOVMultiplier < 0.75) {
+        HotFixesFileToSave.FOVMultiplier = 0.75;
+    }
     fwrite(&HotFixesFileToSave, sizeof(HotFixesFileToSave), 1, UserHotFixConfig);
     fclose(UserHotFixConfig);
     LoadHotFixConfig();
@@ -115,6 +162,10 @@ void UserConfig::SanatizeHotKeySelection(BYTE SelectedHkey) {
     if (HotKeyFileToSave.GridShading == SelectedHkey) {
         HotKeyFileToSave.GridShading = 0;
         HotKeys::EditorGridShading = "None";
+    }
+    if (HotKeyFileToSave.Transition == SelectedHkey) {
+        HotKeyFileToSave.Transition = 0;
+        HotKeys::EditorTransition = "None";
     }
 }
 

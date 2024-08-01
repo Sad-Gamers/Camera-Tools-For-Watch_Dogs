@@ -52,4 +52,5 @@ void Main::MainThread() {
 	CinematicLightingManager::InitializeCinematicLights();
 	UserConfig::LoadHotKeys();
 	UserConfig::LoadHotFixConfig();
+	UserConfig::LoadGUIConfig();
 }

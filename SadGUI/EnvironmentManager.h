@@ -1,6 +1,6 @@
 #pragma once
 #include "GlobalHeaders.h"
-
+#define o_TimeOfDay 0x758
 
 class EnvironmentManager
 {
@@ -12,14 +12,14 @@ public:
 
 	inline static bool FreezeRain;
 	inline static const char* CurrentWeatherPreset;
-	inline static int StandardTimeHour;
-	inline static int StandardTimeMinute;	
 	inline static int MilitaryTimeHour;
 	inline static int MilitaryTimeMinute;
-	inline static const char* StandardTimeFormat;
+	inline static float TimeOfDay;
 
-
+	static void IncreaseTimeOfDay(float DeltaTime);
+	static void DecreaseTimeOfDay(float DeltaTime);
 	static void UpdateTimeOfDay();
+	static void SetTimeOfDay();
 	static void UpdateWeatherPreset();
 	static uintptr_t ApplySceneParticlePostFx_Detour(uintptr_t a1);
 

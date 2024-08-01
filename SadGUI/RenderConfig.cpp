@@ -1,8 +1,10 @@
 #include "RenderConfig.h"
+#include "CameraToolMonitor.h"
 
 void RenderConfig::ApplyConfig(RenderConfigPreset Config) {
 	uintptr_t Imagebase = Misc::Imagebase;
 	uintptr_t RenderConfig = GetRenderConfig();
+	Misc::StopFrameJobs = true;
 	*(bool*)(RenderConfig + o_SuperSampling) = Config.SuperSampling;
 	*(bool*)(RenderConfig + o_SoftShadows) = Config.SoftShadows;
 	*(bool*)(RenderConfig + o_EnableCSMShadows) = Config.EnableCSMShadows;
@@ -42,6 +44,7 @@ void RenderConfig::ApplyConfig(RenderConfigPreset Config) {
 	*(float*)(RenderConfig + o_FSMShadowFadeEnd) = Config.FSMShadowFadeEnd;
 	*(bool*)(RefreshByte) = true;
 }
+
 
 void RenderConfig::Initialize() {
 	uintptr_t RenderConfig = GetRenderConfig();
@@ -132,6 +135,7 @@ void RenderConfig::InitializeSuperRenderingPreset() {
 	SuperRenderConfig.FSMShadowFadeStart = 0.1f;
 	SuperRenderConfig.FSMShadowFadeEnd = 0.0f;
 }
+
 void RenderConfig::SaveOriginalConfig() {
 	uintptr_t RenderConfig = GetRenderConfig();
 	oRenderConfig.SuperSampling = *(bool*)(RenderConfig + o_SuperSampling);

@@ -7,6 +7,9 @@ public:
 	static int CheckGameVersion();
 	static bool Initialize();
 	inline static uintptr_t UpdateCamera;
+	inline static uintptr_t LoadMissionData;
+	inline static uintptr_t ExecuteFrameJob;
+	inline static uintptr_t PushPlayerActionMap;
 	inline static uintptr_t ProccessDepthOfField;
 	inline static uintptr_t PostFXDepthOfField;
 	inline static uintptr_t GetSceneObjectHandle;

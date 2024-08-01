@@ -53,7 +53,3 @@ DirectX::XMFLOAT3 CinematicLight::UpdateRotation(DirectX::XMFLOAT3 Rotation)
 	return Rotation;
 }
 
-void CinematicLight::GetEntityID()
-{
-	std::cout << EntityID << std::endl;
-}

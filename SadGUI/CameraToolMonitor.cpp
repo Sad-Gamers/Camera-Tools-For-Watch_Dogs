@@ -12,17 +12,18 @@
 #include "SlideAnimations.h"
 #include "CinematicLight.h"
 #include "HotKeys.h"
+#include "SadGUI.h"
 
 
 void Monitor::MonitorChanges() {
 
 	ProccessInput();
-	//+std::cout << Misc::GetNumberOfPlayersInSession() << std::endl;
 
 	if (Misc::IsInLoadingState() || Misc::IsOnline()) {
 		FreeCam = false;
 		TimeStop = false;
 		SlowMo = false;
+		CustomSpeed = false;
 		FreezeRain = false;
 		GridShading = false;
 		HideUI = false;
@@ -55,13 +56,35 @@ void Monitor::MonitorChanges() {
 		CinematicLightingManager::RemoveAllCinematicLights();
 		CameraManager::CinematicTransition = false;
 		SlideAnimations::DeleteAllSlideLockEvents();
+		EnvironmentManager::UpdateTimeOfDay();
 	}
 
+
+	if (RemoveControl) {
+		Misc::PushPlayerActionMap("common_emptyactionmap");
+		RemoveControl = false;
+		RestoreControlEvent = false;
+	}
+
+	if (RestoreControl) {
+		TickCountOnUIHide = GetTickCount64();
+		RestoreControl = false;
+		RestoreControlEvent = true;
+	}
+
+	if (RestoreControlEvent) {
+		if (GetTickCount64() >= (TickCountOnUIHide + 100uLL)) {
+			Misc::PopPlayerActionMap("common_emptyactionmap");
+			RestoreControlEvent = true;
+		}
+	}
 
 	if (Misc::TimeStop != TimeStop) {
 		if (TimeStop) {
 			SlowMo = false;
+			CustomSpeed = false;
 			Misc::SlowMo = false;
+			Misc::CustomSpeed = false;
 			Misc::TimeStop = true;
 			Misc::EnablePlayerAnimations(false);
 		}
@@ -71,20 +94,39 @@ void Monitor::MonitorChanges() {
 			Misc::EnablePlayerAnimations(true);
 		}
 	}
-	else if (Misc::SlowMo != SlowMo) {
+
+	if (Misc::SlowMo != SlowMo) {
 		if (SlowMo) {
 			TimeStop = false;
+			CustomSpeed = false;
 			Misc::SlowMo = true;
 			Misc::TimeStop = false;
+			Misc::CustomSpeed = false;
 			Misc::EnablePlayerAnimations(true);
 		}
 		else
 			Misc::SlowMo = false;
 	}
 
+	if (Misc::CustomSpeed != CustomSpeed) {
+		if (CustomSpeed) {
+			Misc::SpeedMultiplier = 1.0f;
+			TimeStop = false;
+			SlowMo = false;
+			Misc::CustomSpeed = true;
+			Misc::TimeStop = false;
+			Misc::SlowMo = false;
+			Misc::EnablePlayerAnimations(true);
+		}
+		else
+			Misc::CustomSpeed = false;
+	}
+
 	if (FreeCam != CameraManager::FreeCam) {
 		if (FreeCam) {
+			CinematicLightingManager::LoadCinematicLights();
 			Misc::PopPlayerActionMap("cinematic");
+			Misc::PopPlayerActionMap("no_controls");
 			*(BYTE*)(Misc::Imagebase + Offsets::DepthOfFieldCondition) = Offsets::ForceDOF;
 			Offsets::oUpdatePlayerLook = *(BYTE*)(Misc::Imagebase + Offsets::UpdatePlayerLook);
 			*(BYTE*)(Misc::Imagebase + Offsets::UpdatePlayerLook) = Offsets::oUpdatePlayerLook + 5;
@@ -151,7 +193,7 @@ void Monitor::MonitorChanges() {
 	}
 
 	if (UpdateTimeOfDay) {
-		EnvironmentManager::UpdateTimeOfDay();
+		EnvironmentManager::SetTimeOfDay();
 		UpdateTimeOfDay = false;
 	}
 
@@ -358,25 +400,27 @@ void Monitor::MonitorChanges() {
 		RenderConfig::Revert();
 		RevertRenderConfig = false;
 	}
+	if(!DXHook::ShowGUI)
+		EnvironmentManager::UpdateTimeOfDay();
 
 }
 
 void Monitor::ProccessInput() {
+	float DeltaTime = ImGui::GetIO().DeltaTime;
 	static bool ToggleTimeStopKey = false;
 	static bool ToggleSlowMotionKey = false;
 	static bool ToggleUIKey = false;
 	static bool ToggleFreeCamKey = false;
 	static bool ToggleGridShadingKey = false;
+	static bool TransitionKey = false;
 
 	if (FreeCam && CameraManager::FreeCamInit && CameraManager::FreeCamMode == "Unbounded"
 		&& !CameraManager::CinematicTransition) {
-		float DeltaTime = ImGui::GetIO().DeltaTime;
 		float CameraSpeed = DeltaTime * CameraManager::CameraSpeed;
 
 
 		CameraManager::CamRotation.z += Misc::MouseDeltaX * DeltaTime;
 		CameraManager::CamRotation.x += Misc::MouseDeltaY * DeltaTime;
-
 
 		if (GetAsyncKeyState(VK_UP)) {
 			CameraManager::CamPosition.x += CameraSpeed * CameraManager::CamDirectionVectorY.x;
@@ -400,14 +444,43 @@ void Monitor::ProccessInput() {
 			CameraManager::CamPosition.y -= CameraSpeed * CameraManager::CamDirectionVectorX.y;
 		}
 
-		if (GetAsyncKeyState(VK_PRIOR)) {
+		if (GetAsyncKeyState(VK_PRIOR))
 			CameraManager::CamPosition.z += CameraSpeed;
-		}
 
-		if (GetAsyncKeyState(VK_NEXT)) {
+		if (GetAsyncKeyState(VK_NEXT))
 			CameraManager::CamPosition.z -= CameraSpeed;
-		}
+
+
+
 	}
+	if (FreeCam) {
+		if (GetAsyncKeyState(VK_NUMPAD9) && CameraManager::FieldOfView <= 160)
+			CameraManager::FieldOfView += DeltaTime * 2.0f;
+
+		if (GetAsyncKeyState(VK_NUMPAD6))
+			CameraManager::FieldOfView = CameraManager::FieldOfViewOnActivation;
+
+		if (GetAsyncKeyState(VK_NUMPAD3) && CameraManager::FieldOfView >= 0)
+			CameraManager::FieldOfView -= DeltaTime * 2.0f;
+
+		if (GetAsyncKeyState(VK_NUMPAD7) && CameraManager::Roll < 180)
+			CameraManager::Roll += DeltaTime * 2.0f;
+
+		if (GetAsyncKeyState(VK_NUMPAD4))
+			CameraManager::Roll = 0;
+
+		if (GetAsyncKeyState(VK_NUMPAD1) && CameraManager::Roll > -180)
+			CameraManager::Roll -= DeltaTime * 2.0f;
+	}
+
+
+	if (GetAsyncKeyState(VK_MULTIPLY))
+		EnvironmentManager::IncreaseTimeOfDay(DeltaTime);
+
+	if (GetAsyncKeyState(VK_SUBTRACT))
+		EnvironmentManager::DecreaseTimeOfDay(DeltaTime);
+
+
 	if (GetAsyncKeyState(HotKeys::HUD) < 0 && !ToggleUIKey)
 		HideUI = !HideUI;
 	if (GetAsyncKeyState(HotKeys::SlowMo) < 0 && !ToggleSlowMotionKey)
@@ -418,8 +491,28 @@ void Monitor::ProccessInput() {
 		FreeCam = !FreeCam;
 	if (GetAsyncKeyState(HotKeys::GridShading) < 0 && !ToggleGridShadingKey)
 		GridShading = !GridShading;
-		
 
+	if (GetAsyncKeyState(HotKeys::Transition) < 0 && !TransitionKey) {
+		if(CameraManager::CinematicTransition)
+			CameraManager::CinematicTransition = false;
+		else {
+			UserConfig::LoadCameraData(0);
+			UserConfig::LoadCameraData(1);
+			UserConfig::CameraData PointOneData = UserConfig::CameraData1;
+			UserConfig::CameraData PointTwoData = UserConfig::CameraData2;
+			if (SadGUI::PointOne == "A")
+				PointOneData = UserConfig::CameraData1;
+			if (SadGUI::PointOne == "B")
+				PointOneData = UserConfig::CameraData2;
+			if (SadGUI::PointTwo == "A")
+				PointTwoData = UserConfig::CameraData1;
+			if (SadGUI::PointTwo == "B")
+				PointTwoData = UserConfig::CameraData2;
+			CameraManager::StartCinematicTransition({ PointOneData, PointTwoData });
+		}
+	}
+
+	TransitionKey = GetKeyState(HotKeys::Transition) < 0;
 	ToggleUIKey = GetKeyState(HotKeys::HUD) < 0;
 	ToggleSlowMotionKey = GetKeyState(HotKeys::SlowMo) < 0;
 	ToggleTimeStopKey = GetKeyState(HotKeys::TimeStop) < 0;

@@ -9,8 +9,6 @@ public:
 
 	static uintptr_t GetFileManager();
 
-	inline static bool WLULoaded;
-
 	inline static std::string CustomWLU;
 	inline static std::string RootPath;
 

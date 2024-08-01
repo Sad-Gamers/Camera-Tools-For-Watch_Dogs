@@ -1,6 +1,7 @@
 #include "DXHook.h"
 #include "SadGUI.h"
 #include "HotKeys.h"
+#include "CameraToolMonitor.h"
 
 void DXHook::Initialize() {
 	ShowGUI = false;
@@ -74,7 +75,7 @@ long DXHook::Present_Detour(IDXGISwapChain* p_swap_chain, UINT sync_interval, UI
 			ImGui::CreateContext();
 			ImGui_ImplWin32_Init(WindowHandle);
 			ImGui_ImplDX11_Init(p_device, p_context);
-			SadGUI::LoadImguiTheme();
+			SadGUI::ReloadFont = true;
 			HookInitiated = true;
 		}
 		else
@@ -92,21 +93,37 @@ long DXHook::Present_Detour(IDXGISwapChain* p_swap_chain, UINT sync_interval, UI
 		if (ShowGUI) {
 			oWndProc = (WNDPROC)SetWindowLongPtr(WindowHandle, GWLP_WNDPROC, (LONG_PTR)WndProc);
 			PostMessage(WindowHandle, WM_KILLFOCUS, 0, 0);
+			Monitor::RemoveControl = true;
 			Misc::DisableInputListening(true);
 		}
 		else {
 			SetWindowLongPtr(WindowHandle, GWLP_WNDPROC, (LONG_PTR)(oWndProc));
 			PostMessage(WindowHandle, WM_SETFOCUS, 0, 0);
 			PostMessage(WindowHandle, 0x0201, 1, 0);
+			Monitor::RestoreControl = true;
 			Misc::DisableInputListening(false);
 		}
 	}
 
 	GUIToggle = GetKeyState(HotKeys::GUI) < 0;
 
+	if (SadGUI::ReloadFont) {
+		ImGuiIO& io = ImGui::GetIO();
+		io.FontDefault = io.Fonts->AddFontFromFileTTF(SadGUI::Font.c_str(), SadGUI::FontSize, nullptr, io.Fonts->GetGlyphRangesJapanese());
+		ImGui::GetIO().Fonts->Build();
+		ImGui_ImplDX11_InvalidateDeviceObjects();
+	}
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
+
+
 	ImGui::NewFrame();
+	if (SadGUI::ReloadFont) {
+		SadGUI::LoadImguiTheme();
+		SadGUI::ReloadFont = false;
+	}
+		
 	if (ShowGUI) {
 		SadGUI::ShowCameraTool();
 	}

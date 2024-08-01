@@ -30,6 +30,9 @@ bool Offsets::Initialize() {
 		return false;
 	if (GameVersion == 1) {
 		UpdateCamera = 0x7935F0;
+		LoadMissionData = 0x10BB2F0;
+		ExecuteFrameJob = 0x467E60;
+		PushPlayerActionMap = 0x694CD0;
 		ProccessDepthOfField = 0x436DB0;
 		PostFXDepthOfField = 0x36B9040;
 		GetSceneObjectHandle = 0x25AEA10;
@@ -93,9 +96,12 @@ bool Offsets::Initialize() {
 		UpdatePlayerLook = 0x16E643B;
 		ForceDOF = 128;
 		ReleaseDOF = 132;
-	}
+	} 
 	if (GameVersion == 2) {
 		UpdateCamera = 0x2A1150;
+		LoadMissionData = 0x120BF90;
+		ExecuteFrameJob = 0x98BDF0;
+		PushPlayerActionMap = 0x19AC00;
 		ProccessDepthOfField = 0x95B400;
 		PostFXDepthOfField = 0x3628F50;
 		GetSceneObjectHandle = 0x843770;
@@ -162,6 +168,9 @@ bool Offsets::Initialize() {
 	}
 	if (GameVersion == 3) {
 		UpdateCamera = 0x2D2170;
+		LoadMissionData = 0x13CBD60;
+		ExecuteFrameJob = 0x9E4F70;
+		PushPlayerActionMap = 0x3234E0;
 		ProccessDepthOfField = 0x9AF100;
 		PostFXDepthOfField = 0x34F1800;
 		GetSceneObjectHandle = 0x7F8710;
@@ -228,6 +237,9 @@ bool Offsets::Initialize() {
 	}
 	if (GameVersion == 4) {
 		UpdateCamera = 0x170ED50;
+		LoadMissionData = 0x640790;
+		ExecuteFrameJob = 0x1DF3980;
+		PushPlayerActionMap = 0x1613BE0;
 		ProccessDepthOfField = 0x1DC31C0;
 		PostFXDepthOfField = 0x363B7A0;
 		GetSceneObjectHandle = 0x1C568C0;

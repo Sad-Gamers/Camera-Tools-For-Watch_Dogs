@@ -11,6 +11,7 @@ public:
     inline static const char* EditorSlowMo;
     inline static const char* EditorHUD;
     inline static const char* EditorGridShading;
+    inline static const char* EditorTransition;
 
     inline static BYTE GUI;
     inline static BYTE FreeCam;
@@ -18,4 +19,5 @@ public:
     inline static BYTE SlowMo;
     inline static BYTE HUD;
     inline static BYTE GridShading;
+    inline static BYTE Transition;
 };

@@ -20,7 +20,6 @@ void CameraManager::Initialize() {
 	FStop = 40;
 	FieldOfView = 75;
 	Roll = 0;
-	Roll = 0;
 	TranSlope = 5;
 	FreeCamMode = "Unbounded";
 	DOFMode = "Blur Far";
@@ -121,6 +120,7 @@ void CameraManager::InitializeLookAtCam() {
 	FocalLength = 300;
 	FStop = 40;
 	FieldOfView = 70;
+	FieldOfViewOnActivation = 70;
 	Roll = 0;
 	DOFMode = "Blur Far";
 	NearDOF = false;
@@ -130,13 +130,13 @@ void CameraManager::InitializeFreeCam(DirectX::XMFLOAT3 OCamPosition,
 	DirectX::XMFLOAT3 OCamRotation, float oFieldOfView) {
 	CamPosition = OCamPosition;
 	CamRotation = OCamRotation;
-	FieldOfView = oFieldOfView;
 	UpdateFreeCamDirectionVector(CamRotation);
 	FocusDistance = 30;
 	FocalLength = 300;
 	FStop = 40;
 	TranSlope = 5;
 	FieldOfView = RadiansToDegree(oFieldOfView);
+	FieldOfViewOnActivation = RadiansToDegree(oFieldOfView);
 	Roll = 0;
 	DOFMode = "Blur Far";
 	NearDOF = false;
@@ -163,6 +163,19 @@ uintptr_t CameraManager::UpdateCamera_Detour(uintptr_t CCameraManager, uintptr_t
 
 
 		if (FreeCam) {
+
+			if (FieldOfView > 160)
+				FieldOfView = 160;
+
+			if (FieldOfView < 0)
+				FieldOfView = 0;
+
+			if (Roll >= 180)
+				Roll = 180;
+
+			if (Roll <= -180)
+				Roll = -180;
+
 			if (CinematicTransition) {
 				ProgressCinematicTransition();
 				*(float*)(CCameraManager + 84) = CamPosition.x;

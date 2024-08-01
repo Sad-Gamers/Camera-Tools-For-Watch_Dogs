@@ -27,7 +27,7 @@ public:
 	inline static float CubicAcceleration;
 	inline static bool CinematicTransition;
 	inline static bool StaticAngles;
-	inline static float FieldOfView, Roll;
+	inline static float FieldOfView, FieldOfViewOnActivation, Roll;
 	inline static float FocusDistance, FocalLength, FStop;
 	inline static bool NearDOF, FarDOF; 
 	inline static bool FreeCam, FreeCamInit, FollowCam;

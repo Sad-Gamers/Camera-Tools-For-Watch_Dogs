@@ -10,7 +10,6 @@ void FileManager::Initialize() {
     MH_CreateHook((LPVOID)(Imagebase + Offsets::FileOpenFromPathId), &FileOpenFromPathId_Detour, reinterpret_cast<LPVOID*>(&FileOpenFromPathId));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::FileOpen));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::FileOpenFromPathId));
-    WLULoaded = false;
 }
 
 uintptr_t FileManager::GetFileManager() {
@@ -19,16 +18,11 @@ uintptr_t FileManager::GetFileManager() {
 
 
 uintptr_t FileManager::FileOpenFromPathId_Detour(uintptr_t CFileManager, uintptr_t CPathID, bool XCompress) {
-    if (*(uintptr_t*)CPathID == 
-        Misc::FNV32("worlds\\windy_city\\generated\\wlu\\wlu_data_world.xml.data.fcb")) {
-        uintptr_t FilePtr = FileOpen(CFileManager, CustomWLU.c_str(), 1, false);
-        if (FilePtr)
-            WLULoaded = true;
-        return FilePtr;
+    uintptr_t OriginalOpen = FileOpenFromPathId(CFileManager, CPathID, XCompress);
+    if (*(uint32_t*)CPathID == Misc::FNV32("worlds\\windy_city\\generated\\wlu\\wlu_data_sk_m03.xml.data.fcb")) {
+        return FileOpen(CFileManager, CustomWLU.c_str(), 1, false);;
     }
-    else {
-        return FileOpenFromPathId(CFileManager, CPathID, XCompress);
-    }
+    return OriginalOpen;
 }
 
 uintptr_t FileManager::FileOpen_Detour(uintptr_t CFileManager, const char* FileName, int AccessMode, bool XCompress) {
@@ -36,7 +30,6 @@ uintptr_t FileManager::FileOpen_Detour(uintptr_t CFileManager, const char* FileN
     if (FilePathStr.substr(FilePathStr.find_last_of("/\\") + 1) == "GamerProfile.xml") {
         RenderConfig::Initialized = false;
     }
-        
     return FileOpen(CFileManager, FileName, AccessMode, XCompress);
 }
 
