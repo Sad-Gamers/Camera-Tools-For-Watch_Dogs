@@ -20,7 +20,7 @@ public:
 	static void DecreaseTimeOfDay(float DeltaTime);
 	static void UpdateTimeOfDay();
 	static void SetTimeOfDay();
-	static void UpdateWeatherPreset();
+	static void SetWeatherPreset();
 	static uintptr_t ApplySceneParticlePostFx_Detour(uintptr_t a1);
 
 	typedef uintptr_t(*BeginEnvironmentEvent_t)(uintptr_t CEnvironmentEventsManager, int* PresetHash, float Fadein, bool NoTransition);

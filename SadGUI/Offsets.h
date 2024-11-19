@@ -5,7 +5,11 @@ class Offsets
 {
 public:
 	static int CheckGameVersion();
-	static bool Initialize();
+	static bool Initialize(); 
+	inline static uintptr_t MouseSensitivity;
+	inline static uintptr_t LoadCameraContext;
+	inline static uintptr_t ProcessMouseSmoothing;
+	inline static uintptr_t ProcessMouseInput;
 	inline static uintptr_t UpdateCamera;
 	inline static uintptr_t LoadMissionData;
 	inline static uintptr_t ExecuteFrameJob;
@@ -58,7 +62,7 @@ public:
 	inline static uintptr_t LoadDep;
 	inline static uintptr_t RenderConfig;
 	inline static uintptr_t PostAnimUpdateWrapper;
-	inline static uintptr_t UnkPhysComponentWrapper;
+	inline static uintptr_t UnkRoutineWrapper;
 	inline static uintptr_t PostAnimUpdate;
 	inline static uintptr_t GetBulletsInClip;
 	inline static uintptr_t UpdateWeaponStatus;

@@ -73,13 +73,13 @@ void Actor::Holster()
 
 void Actor::UpdateAnimation()
 {
-	EntityManager::PlayAnimation(ID, Animation, LoopAnimation, 0, -1);
+	EntityManager::PlayAnimation(ID, Animation, LoopAnimation);
 }
 
 void Actor::StopAnimation()
 {
 	EntityManager::PlayAnimation(ID,
-		"move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false, 0, -1);
+		"move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false);
 }
 
 

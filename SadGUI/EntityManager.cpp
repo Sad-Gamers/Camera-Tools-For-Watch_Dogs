@@ -36,7 +36,7 @@ uint64_t EntityManager::GetLocalPlayerEntityId() {
 		return 0;
 }
 
-void EntityManager::PlayAnimation(uint64_t TargetEntity, const char* Anim, bool Looping, int Index, uint64_t anchorEntity) {
+void EntityManager::PlayAnimation(uint64_t TargetEntity, const char* Anim, bool Looping) {
 	if (TargetEntity) {
 		std::string AnimationName = Anim;
 		std::string FullPath = "move/decisiontrees/" + AnimationName + ".move.bin";

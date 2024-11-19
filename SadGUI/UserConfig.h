@@ -46,6 +46,8 @@ public:
         bool NoMenuGridShading;
         bool BlowBack;
         bool SlideLocking;
+        bool DisableMouseAcceleration;
+        bool DisableRotSpeedCap;
         float FOVMultiplier;
     } HotFixesFile, HotFixesFileToSave;
 

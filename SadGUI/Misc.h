@@ -3,7 +3,8 @@
 
 #define o_MouseDeltaY 0x90
 #define o_MouseDeltaX 0x94
-
+#define o_MouseSensY 0x124
+#define o_MouseSensX 0x120
 
 class Misc
 {
@@ -18,8 +19,9 @@ public:
 	inline static float MouseDeltaX;
 	inline static float MouseDeltaY;
 	inline static float SpeedMultiplier;
-
 	inline static bool StopFrameJobs;
+	inline static bool DisableMouseAcceleration;
+	inline static bool DisableRotSpeedCap;
 	inline static ULONGLONG TickCountOnFrameJobStop;
 
 	static void DisableInputListening(bool State);
@@ -42,9 +44,6 @@ public:
 	typedef void (*SendShowOrHideAllUIEvent_t)(bool);
 	inline static SendShowOrHideAllUIEvent_t SendShowOrHideAllUIEvent;
 
-	typedef uintptr_t(*UpdateMouseCameraLook_t)(uintptr_t);
-	inline static UpdateMouseCameraLook_t UpdateMouseCameraLook;
-
 	typedef void (*PopPlayerActionMap_t)(const char*);
 	inline static PopPlayerActionMap_t PopPlayerActionMap;
 
@@ -56,6 +55,15 @@ public:
 
 	typedef uintptr_t(*ExecuteFrameJob_t)(uintptr_t, uintptr_t, uintptr_t);
 	inline static ExecuteFrameJob_t ExecuteFrameJob;
+
+	typedef uintptr_t(*ProcessMouseSmoothing_t)(uintptr_t, int*);
+	inline static ProcessMouseSmoothing_t ProcessMouseSmoothing;
+
+	typedef uintptr_t (*ProcessMouseInput_t)(uintptr_t a1, uintptr_t a2);
+	inline static ProcessMouseInput_t ProcessMouseInput;
+
+	typedef uintptr_t(*LoadCameraContext_t)(uintptr_t a1, uintptr_t a2);
+	inline static LoadCameraContext_t LoadCameraContext;
 
 	static uintptr_t ExecuteFrameJob_Detour(uintptr_t a1, uintptr_t a2, uintptr_t a3);
 
@@ -70,7 +78,8 @@ public:
 	static bool IsOnline();
 
 	static bool GPSConfigInit_detour(uintptr_t CGPSConfig, uintptr_t PawnPlayer);
-	static uintptr_t UpdateMouseCameraLook_detour(uintptr_t a1);
-
+	static uintptr_t ProcessMouseInput_detour(uintptr_t a1, uintptr_t a2);
+	static uintptr_t ProcessMouseSmoothing_detour(uintptr_t a1, int* a2);
+	static uintptr_t LoadCameraContext_detour(uintptr_t a1, uintptr_t a2);
 
 };

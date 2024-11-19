@@ -40,12 +40,12 @@ public:
 	typedef uint32_t (*GetBulletsInClip_t)(uintptr_t CInventoryComponent);
 	inline static GetBulletsInClip_t GetBulletsInClip;
 
-	typedef uintptr_t(*UnkPhysComponentUpdateWrapper_t)(uintptr_t CPhysComponent, float DeltaTime);
-	inline static UnkPhysComponentUpdateWrapper_t UnkPhysComponentUpdateWrapper;
+	typedef uintptr_t(*UnkRoutineWrapper_t)(uintptr_t a1, float DeltaTime);
+	inline static UnkRoutineWrapper_t UnkRoutineWrapper;
 
 	static uintptr_t PostAnimUpdate_Detour(uintptr_t CWeaponMechanicComponent, float DeltaTime);
 	static uintptr_t GetWeaponMechanicComponent();
-	static uintptr_t UnkPhysComponentUpdateWrapper_Detour(uintptr_t CPhysComponent, float DeltaTime);
+	static uintptr_t UnkRoutineWrapper_Detour(uintptr_t a1, float DeltaTime);
 	static uintptr_t PostAnimUpdateWrapper_Detour(uintptr_t CWeaponMechanicComponent, float DeltaTime);
 	static uintptr_t UpdateWeaponStatus_detour(uintptr_t CPlayerPawnDriverImplementation);
 

@@ -11,7 +11,7 @@ public:
 	static uint64_t GetEntitySystem();
 	static uint64_t GetCurrentPlayerVehicleEntityId();
 
-	static void PlayAnimation(uint64_t TargetEntity, const char* Anim, bool Looping, int Index, uint64_t anchorEntity);
+	static void PlayAnimation(uint64_t TargetEntity, const char* Anim, bool Looping);
 	static void StopAnimation(uint64_t TargetEntity);
 	static void ChangeGraphicKit(uint64_t TargetEntity, const char* Model);
 	static uint64_t SpawnEntity(uint64_t* ReturnID, const char* Archetype,  DirectX::XMFLOAT3 Position, DirectX::XMFLOAT3 Rotation);

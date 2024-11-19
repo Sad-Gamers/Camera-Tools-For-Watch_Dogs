@@ -161,7 +161,6 @@ uintptr_t CameraManager::UpdateCamera_Detour(uintptr_t CCameraManager, uintptr_t
 			}
 		}
 
-
 		if (FreeCam) {
 
 			if (FieldOfView > 160)

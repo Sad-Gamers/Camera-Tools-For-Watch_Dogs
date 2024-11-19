@@ -13,14 +13,14 @@ void Player::Initialize() {
 void Player::UpdateAnimation()
 {
 	uint64_t PlayerEntityId = EntityManager::GetLocalPlayerEntityId();
-	EntityManager::PlayAnimation(PlayerEntityId, Animation, LoopAnimation, 0, -1);
+	EntityManager::PlayAnimation(PlayerEntityId, Animation, LoopAnimation);
 }
 
 void Player::StopAnimation()
 {
 	uint64_t PlayerEntityId = EntityManager::GetLocalPlayerEntityId();
 	EntityManager::PlayAnimation(PlayerEntityId,
-		"move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false, 0, -1);
+		"move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false);
 }
 
 void Player::WearMask()
@@ -62,7 +62,7 @@ void Player::Shove()
 {
 	uint64_t PlayerEntityId = EntityManager::GetLocalPlayerEntityId();
 	EntityManager::PlayAnimation(PlayerEntityId,
-		"hurt/drvr_ragdoll_collisionhit", false, 0, -1);
+		"hurt/drvr_ragdoll_collisionhit", false);
 }
 
 void Player::StartHighlight()

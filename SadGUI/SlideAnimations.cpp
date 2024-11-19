@@ -5,7 +5,7 @@
 
 void SlideAnimations::Initialize() {
     uintptr_t Imagebase = Misc::Imagebase;
-    UnkPhysComponentUpdateWrapper = (UnkPhysComponentUpdateWrapper_t)(Imagebase + Offsets::UnkPhysComponentWrapper);
+    UnkRoutineWrapper = (UnkRoutineWrapper_t)(Imagebase + Offsets::UnkRoutineWrapper);
     PostAnimUpdateWrapper = (PostAnimUpdateWrapper_t)(Imagebase + Offsets::PostAnimUpdateWrapper);
     PostAnimUpdate = (PostAnimUpdate_t)(Imagebase + Offsets::PostAnimUpdate);
     GetBulletsInClip = (GetBulletsInClip_t)(Imagebase + Offsets::GetBulletsInClip);
@@ -14,8 +14,8 @@ void SlideAnimations::Initialize() {
     GetEquippedWeaponGrip = (GetEquippedWeaponGrip_t)(Imagebase + Offsets::GetEquippedWeaponGrip);
     MH_CreateHook((LPVOID)(Imagebase + Offsets::PostAnimUpdateWrapper), &PostAnimUpdateWrapper_Detour, reinterpret_cast<LPVOID*>(&PostAnimUpdateWrapper));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::PostAnimUpdateWrapper));
-    MH_CreateHook((LPVOID)(Imagebase + Offsets::UnkPhysComponentWrapper), &UnkPhysComponentUpdateWrapper_Detour, reinterpret_cast<LPVOID*>(&UnkPhysComponentUpdateWrapper));
-    MH_EnableHook((LPVOID)(Imagebase + Offsets::UnkPhysComponentWrapper));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::UnkRoutineWrapper), &UnkRoutineWrapper_Detour, reinterpret_cast<LPVOID*>(&UnkRoutineWrapper));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::UnkRoutineWrapper));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::PostAnimUpdate), &PostAnimUpdate_Detour, reinterpret_cast<LPVOID*>(&PostAnimUpdate));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::PostAnimUpdate));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdateWeaponStatus), &UpdateWeaponStatus_detour, reinterpret_cast<LPVOID*>(&UpdateWeaponStatus));
@@ -27,34 +27,31 @@ uintptr_t SlideAnimations::GetWeaponMechanicComponent() {
 }
 
 //Blowbackfix Begin
-uintptr_t SlideAnimations::UnkPhysComponentUpdateWrapper_Detour(uintptr_t CPhysWorld, float DeltaTime) {
-    if (GetWeaponMechanicComponent() && PatchBlowBack) {
-        PostUpdate = true;
-        PostAnimUpdateWrapper_Detour(GetWeaponMechanicComponent(), DeltaTime);
+uintptr_t SlideAnimations::UnkRoutineWrapper_Detour(uintptr_t a1, float DeltaTime) {
+    uintptr_t Result = UnkRoutineWrapper(a1, DeltaTime);
+    if (GetWeaponMechanicComponent() && PatchBlowBack && PostUpdate) {
+        PostAnimUpdateWrapper(GetWeaponMechanicComponent(), DeltaTime);
         PostUpdate = false;
     }
-    return UnkPhysComponentUpdateWrapper(CPhysWorld, DeltaTime);
+    return Result;
 }
 
 uintptr_t SlideAnimations::PostAnimUpdateWrapper_Detour(uintptr_t CWeaponMechanicComponent, float DeltaTime) {
-    if (PostUpdate) {
-        return PostAnimUpdateWrapper(CWeaponMechanicComponent, DeltaTime);
-    }
-    else
-        return 0i64;
+    PostUpdate = true;
+    return 0;
 }
 //Blowbackfix End
 
 void SlideAnimations::PatchMissingSlideBone(uintptr_t CWeaponMechanicComponent) {
-    if (*(BYTE*)(CWeaponMechanicComponent + 0x2D4) == 255) {
-        *(BYTE*)(CWeaponMechanicComponent + 0x2D4) = 3;
-        *(BYTE*)(CWeaponMechanicComponent + 0x2D5) = 0;
-        *(BYTE*)(CWeaponMechanicComponent + 0x2D6) = 0;
-        *(BYTE*)(CWeaponMechanicComponent + 0x2D7) = 0;
-        *(float*)(CWeaponMechanicComponent + 0x2D8) = 0.00908953f;
-        *(float*)(CWeaponMechanicComponent + 0x2DC) = 0.122821f;
-        *(float*)(CWeaponMechanicComponent + 0x2E0) = 0.102064f;
-    }
+    //if (*(BYTE*)(CWeaponMechanicComponent + 0x2D4) == 255) {
+    //    *(BYTE*)(CWeaponMechanicComponent + 0x2D4) = 3;
+    //    *(BYTE*)(CWeaponMechanicComponent + 0x2D5) = 0;
+    //    *(BYTE*)(CWeaponMechanicComponent + 0x2D6) = 0;
+    //    *(BYTE*)(CWeaponMechanicComponent + 0x2D7) = 0;
+    //    *(float*)(CWeaponMechanicComponent + 0x2D8) = 0.00908953f;
+    //    *(float*)(CWeaponMechanicComponent + 0x2DC) = 0.122821f;
+    //    *(float*)(CWeaponMechanicComponent + 0x2E0) = 0.102064f;
+    //}
 }
 //Slide Locking Begin
 void SlideAnimations::DeleteAllSlideLockEvents() {

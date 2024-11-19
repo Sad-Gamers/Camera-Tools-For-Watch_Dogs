@@ -187,8 +187,9 @@ void Monitor::MonitorChanges() {
 		}
 	}
 
+
 	if (UpdateWeatherPreset) {
-		EnvironmentManager::UpdateWeatherPreset();
+		EnvironmentManager::SetWeatherPreset();
 		UpdateWeatherPreset = false;
 	}
 

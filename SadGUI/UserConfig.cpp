@@ -97,29 +97,35 @@ void UserConfig::LoadHotFixConfig() {
     if (UserHotFixConfig) {
         fread(&HotFixesFile, sizeof(HotFixesFile), 1, UserHotFixConfig);
         fclose(UserHotFixConfig);
-        if (HotFixesFile.FOVMultiplier > 1.45) {
-            HotFixesFile.FOVMultiplier = 1.45;
+        if (HotFixesFile.FOVMultiplier > 1.45f) {
+            HotFixesFile.FOVMultiplier = 1.45f;
         }
-        if (HotFixesFile.FOVMultiplier < 0.75) {
-            HotFixesFile.FOVMultiplier = 0.75;
+        if (HotFixesFile.FOVMultiplier < 0.75f) {
+            HotFixesFile.FOVMultiplier = 0.75f;
         }
         HotFixesFileToSave = HotFixesFile;
         SlideAnimations::PatchBlowBack = HotFixesFile.BlowBack;
         SlideAnimations::SlideLocking = HotFixesFile.SlideLocking;
         GridShadingManager::DisableMenuGridShading(HotFixesFile.NoMenuGridShading);
         CameraManager::FOVMultiplier = HotFixesFile.FOVMultiplier;
+        Misc::DisableMouseAcceleration = HotFixesFile.DisableMouseAcceleration;
+        Misc::DisableRotSpeedCap = HotFixesFile.DisableRotSpeedCap;
     }
     else
     {
         HotFixesFile.BlowBack = true;
         HotFixesFile.SlideLocking = true;
         HotFixesFile.NoMenuGridShading = false;
+        HotFixesFile.DisableMouseAcceleration = true;
+        HotFixesFile.DisableRotSpeedCap = true;
         HotFixesFile.FOVMultiplier = 1.0;
         HotFixesFileToSave = HotFixesFile;
         SlideAnimations::PatchBlowBack = HotFixesFile.BlowBack;
         SlideAnimations::SlideLocking = HotFixesFile.SlideLocking;
         CameraManager::FOVMultiplier = HotFixesFile.FOVMultiplier;
         GridShadingManager::DisableMenuGridShading(HotFixesFile.NoMenuGridShading);
+        Misc::DisableMouseAcceleration = HotFixesFile.DisableMouseAcceleration;
+        Misc::DisableRotSpeedCap = HotFixesFile.DisableRotSpeedCap;
     }
 }
 void UserConfig::SaveAndReloadHotkeys() {
@@ -131,11 +137,11 @@ void UserConfig::SaveAndReloadHotkeys() {
 
 void UserConfig::SaveAndReloadHotFixConfig() {
     FILE* UserHotFixConfig = fopen(HotFixConfigPath.c_str(), "wb");
-    if (HotFixesFileToSave.FOVMultiplier > 1.45) {
-        HotFixesFileToSave.FOVMultiplier = 1.45;
+    if (HotFixesFileToSave.FOVMultiplier > 1.45f) {
+        HotFixesFileToSave.FOVMultiplier = 1.45f;
     }
-    if (HotFixesFileToSave.FOVMultiplier < 0.75) {
-        HotFixesFileToSave.FOVMultiplier = 0.75;
+    if (HotFixesFileToSave.FOVMultiplier < 0.75f) {
+        HotFixesFileToSave.FOVMultiplier = 0.75f;
     }
     fwrite(&HotFixesFileToSave, sizeof(HotFixesFileToSave), 1, UserHotFixConfig);
     fclose(UserHotFixConfig);

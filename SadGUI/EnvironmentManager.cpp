@@ -57,7 +57,7 @@ void EnvironmentManager::DecreaseTimeOfDay(float DeltaTime) {
 	UpdateTimeOfDay();
 }
 
-void EnvironmentManager::UpdateWeatherPreset() {
+void EnvironmentManager::SetWeatherPreset() {
 	int PresetHash = Misc::GetCRCFromString(CurrentWeatherPreset);
 	if (GetEnvironmentEventsManager()) {
 		BeginEnvironmentEvent(GetEnvironmentEventsManager(), &PresetHash, 0, true);

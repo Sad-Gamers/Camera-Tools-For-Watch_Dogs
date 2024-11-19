@@ -1,5 +1,7 @@
 #include "Misc.h"
+#include "DXHook.h"
 #include "CameraManager.h"
+#include "EntityManager.h"
 #include "GridShadingManager.h"
 
 
@@ -13,19 +15,25 @@ void Misc::Initialize() {
     PopPlayerActionMap = (PopPlayerActionMap_t)(Imagebase + Offsets::PopPlayerActionMap);
     PushPlayerActionMap = (PushPlayerActionMap_t)(Imagebase + Offsets::PushPlayerActionMap);
     GetNumberOfPlayers = (GetNumberOfPlayers_t)(Imagebase + Offsets::GetNumberOfPlayers);
-    UpdateMouseCameraLook = (UpdateMouseCameraLook_t)(Imagebase + Offsets::UpdateMouseCameraLook);
     LoadMissionData = (LoadMissionData_t)(Imagebase + Offsets::LoadMissionData);
     ExecuteFrameJob = (ExecuteFrameJob_t)(Imagebase + Offsets::ExecuteFrameJob);
+    ProcessMouseInput = (ProcessMouseInput_t)(Imagebase + Offsets::ProcessMouseInput);
+    ProcessMouseSmoothing = (ProcessMouseSmoothing_t)(Imagebase + Offsets::ProcessMouseSmoothing);
+    LoadCameraContext = (LoadCameraContext_t)(Imagebase + Offsets::LoadCameraContext);
     MH_Initialize();
     MH_CreateHook((LPVOID)(Imagebase + Offsets::GetMinStepTime), &GetMinStepTime_Detour, reinterpret_cast<LPVOID*>(&GetMinStepTime));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::GetMinStepTime));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::InputListener), &DummyReturn, NULL);
     MH_CreateHook((LPVOID)(Imagebase + Offsets::GPSConfigInit), &GPSConfigInit_detour, reinterpret_cast<LPVOID*>(&GPSConfigInit));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::GPSConfigInit));
-    MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdateMouseCameraLook), &UpdateMouseCameraLook_detour, reinterpret_cast<LPVOID*>(&UpdateMouseCameraLook));
-    MH_EnableHook((LPVOID)(Imagebase + Offsets::UpdateMouseCameraLook));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::ExecuteFrameJob), &ExecuteFrameJob_Detour, reinterpret_cast<LPVOID*>(&ExecuteFrameJob));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::ExecuteFrameJob));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::ProcessMouseInput), &ProcessMouseInput_detour, reinterpret_cast<LPVOID*>(&ProcessMouseInput));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::ProcessMouseInput));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::ProcessMouseSmoothing), &ProcessMouseSmoothing_detour, reinterpret_cast<LPVOID*>(&ProcessMouseSmoothing));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::ProcessMouseSmoothing));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::LoadCameraContext), &LoadCameraContext_detour, reinterpret_cast<LPVOID*>(&LoadCameraContext));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::LoadCameraContext));
 }
 
 void Misc::RemoveVMProtect() {
@@ -45,7 +53,7 @@ void Misc::RemoveVMProtect() {
 
 
 bool Misc::GPSConfigInit_detour(uintptr_t CGPSConfig, uintptr_t PawnPlayer) {
-    ImVec2 DisplaySize = ImGui::GetIO().DisplaySize;
+    //ImVec2 DisplaySize = ImGui::GetIO().DisplaySize;
 
     //if( (DisplaySize.x / DisplaySize.y) >= ( 16.0f / 9.0f) ){
     //    float MiniMapPosition = (((DisplaySize.y * 16 / 9) * 0.84f) +
@@ -66,14 +74,47 @@ void Misc::DummyReturn() {
     return;
 }
 
-uintptr_t Misc::UpdateMouseCameraLook_detour(uintptr_t a1) {
-    uintptr_t MouseDeltaData = *(uintptr_t*)(a1 + 80);
-    if (MouseDeltaData) {
-        MouseDeltaX = *(float*)(MouseDeltaData + o_MouseDeltaX);
-        MouseDeltaY = *(float*)(MouseDeltaData + o_MouseDeltaY);
-    }
-    return UpdateMouseCameraLook(a1);
 
+uintptr_t Misc::ProcessMouseInput_detour(uintptr_t a1, uintptr_t a2) {
+    uintptr_t Result = ProcessMouseInput(a1, a2);
+    if (DisableMouseAcceleration) {
+        if (*(DWORD*)a2 == 2033636637) { //cam_look_py_mouse
+            float MouseSensX = *(float*)((*(uintptr_t*)((Imagebase + Offsets::MouseSensitivity)) + o_MouseSensX));
+            float MouseSensY = *(float*)((*(uintptr_t*)((Imagebase + Offsets::MouseSensitivity)) + o_MouseSensY));
+            MouseSensX = (MouseSensX / 100.0f) * (5.0f - 0.1f) + 0.1f;
+            MouseSensY = (MouseSensY / 100.0f) * (5.0f - 0.1f) + 0.1f;
+            *(float*)(*(uintptr_t*)(a1 + 8) + o_MouseDeltaX) = *(float*)(a2 + 4) * -1.0f * MouseSensX;
+            *(float*)(*(uintptr_t*)(a1 + 8) + o_MouseDeltaY) = *(float*)(a2 + 8) * MouseSensY;
+            MouseDeltaX = *(float*)(a2 + 4) * -1.0f * MouseSensX;
+            MouseDeltaY = *(float*)(a2 + 8) *  MouseSensY;
+        }
+    }
+    else {
+        if (*(DWORD*)a2 == 2033636637) { //cam_look_py_mouse
+            MouseDeltaX = *(float*)(*(uintptr_t*)(a1 + 8) + o_MouseDeltaX);
+            MouseDeltaY = *(float*)(*(uintptr_t*)(a1 + 8) + o_MouseDeltaY);
+        }
+    }
+    return Result;
+}
+
+uintptr_t Misc::ProcessMouseSmoothing_detour(uintptr_t a1, int* a2) {
+    if (DisableMouseAcceleration)
+        return 0;
+    else return ProcessMouseSmoothing(a1, a2);
+}
+
+uintptr_t Misc::LoadCameraContext_detour(uintptr_t a1, uintptr_t a2) {
+    uintptr_t Result = LoadCameraContext(a1, a2);
+    if (DisableRotSpeedCap) {
+        *(float*)(a1 + 0xC0) = 800.0f; //fInputYawExtraSpeed
+        *(float*)(a1 + 0xC4) = 0.0f; //fInputYawExtraSpeedAngleThreshold
+        *(float*)(a1 + 0xC8) = 0.0f; //fInputDampDown
+        *(float*)(a1 + 0xCC) = 0.0f; //fInputDampUp
+        //*(float*)(a1 + 0xB8) = 120.0f; //fInputPitchSpeed
+        //*(float*)(a1 + 0xBC) = 120.0f; //fInputYawSpeed
+    }
+    return Result;
 }
 
 void Misc::DisableInputListening(bool State) {

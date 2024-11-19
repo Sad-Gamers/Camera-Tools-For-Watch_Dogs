@@ -26,7 +26,7 @@ public:
 	inline static float MaxCameraSpeed = 20;
 	inline static float MinSlope = 1;
 	inline static float MaxSlope = 75;
-	inline static float MinSpeed = 0.05;
+	inline static float MinSpeed = 0.05f;
 	inline static float MaxSpeed = 8;
 	inline static float FontSize = 17;
 };
