@@ -69,8 +69,10 @@ public:
         BYTE TimeStop;
         BYTE SlowMo;
         BYTE HUD;
+        BYTE NoClip;
         BYTE GridShading;
         BYTE Transition;
+        BYTE PlayAnim;
     } HotKeyFile, HotKeyFileToSave;
 
     inline static struct GUIFile {

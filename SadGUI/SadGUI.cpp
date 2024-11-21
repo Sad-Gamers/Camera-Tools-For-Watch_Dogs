@@ -108,7 +108,19 @@ void SadGUI::ShowCameraTool() {
 			ImGui::BeginChild("#FreeCam", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() * 0.85f),
 				ImGuiChildFlags_None);
 			ImGui::Checkbox("FreeCam", &Monitor::FreeCam);
+			if (UserConfig::HotKeyFile.FreeCam != 0) {
+				ImGui::SameLine();
+				std::string Hint3 = Databases::HotKeys[UserConfig::HotKeyFile.FreeCam];
+				Hint3 = "(" + Hint3 + +")";
+				ImGui::TextDisabled(Hint3.c_str());
+			}
 			ImGui::Checkbox("Hide UI", &Monitor::HideUI);
+			if (UserConfig::HotKeyFile.HUD != 0) {
+				ImGui::SameLine();
+				std::string Hint4 = Databases::HotKeys[UserConfig::HotKeyFile.HUD];
+				Hint4 = "(" + Hint4 + +")";
+				ImGui::TextDisabled(Hint4.c_str());
+			}
 			if (!CameraManager::FreeCam)
 				ImGui::BeginDisabled();
 			ImGui::SeparatorText("FreeCam Settings");
@@ -196,12 +208,6 @@ void SadGUI::ShowCameraTool() {
 				ImGui::EndDisabled();
 			if (CameraManager::FreeCam) {
 				ImGui::SeparatorText("Controls");
-				ImGui::Text("Toggle FreeCam");
-				ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
-				ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.FreeCam]);
-				ImGui::Text("Toggle UI");
-				ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
-				ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.HUD]);
 				ImGui::Text("Move");
 				ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
 				ImGui::TextDisabled("Arrow Keys");
@@ -314,7 +320,7 @@ void SadGUI::ShowCameraTool() {
 					ImGui::EndCombo();
 				}
 				ImGui::PopItemWidth();
-				if (ImGui::Button("Begin Transition##StartTran"))
+				if (ImGui::Button("Begin##StartTran"))
 				{
 					UserConfig::LoadCameraData(0);
 					UserConfig::LoadCameraData(1);
@@ -330,14 +336,17 @@ void SadGUI::ShowCameraTool() {
 						PointTwoData = UserConfig::CameraData2;
 					CameraManager::StartCinematicTransition({ PointOneData, PointTwoData });
 				}
-				if (ImGui::Button("Stop Transition##StopTran"))
+				ImGui::SameLine();
+				if (ImGui::Button("Stop##StopTran"))
 				{
 					CameraManager::CinematicTransition = false;
 				}
-				ImGui::SeparatorText("Controls");
-				ImGui::Text("Toggle Transition");
-				ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
-				ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.Transition]);
+				if (UserConfig::HotKeyFile.Transition != 0) {
+					ImGui::SameLine();
+					std::string Hint7 = Databases::HotKeys[UserConfig::HotKeyFile.Transition];
+					Hint7 = "(" + Hint7 + +")";
+					ImGui::TextDisabled(Hint7.c_str());
+				}
 				ImGui::EndChild();
 				ImGui::EndTabItem();
 			}
@@ -503,24 +512,33 @@ void SadGUI::ShowCameraTool() {
 			}
 			else {
 				ImGui::Checkbox("Slow Motion", &Monitor::SlowMo);
+				if (UserConfig::HotKeyFile.SlowMo != 0) {
+					ImGui::SameLine();
+					std::string Hint5 = Databases::HotKeys[UserConfig::HotKeyFile.SlowMo];
+					Hint5 = "(" + Hint5 + +")";
+					ImGui::TextDisabled(Hint5.c_str());
+				}
 				ImGui::Checkbox("Stop Time", &Monitor::TimeStop);
+				if (UserConfig::HotKeyFile.TimeStop != 0) {
+					ImGui::SameLine();
+					std::string Hint6 = Databases::HotKeys[UserConfig::HotKeyFile.TimeStop];
+					Hint6 = "(" + Hint6 + +")";
+					ImGui::TextDisabled(Hint6.c_str());
+				}
 			}
 			ImGui::SeparatorText("Misc");
 			ImGui::Checkbox("Grid Shading", &Monitor::GridShading);
+			if (UserConfig::HotKeyFile.GridShading != 0) {
+				ImGui::SameLine();
+				std::string Hint7 = Databases::HotKeys[UserConfig::HotKeyFile.GridShading];
+				Hint7 = "(" + Hint7 + +")";
+				ImGui::TextDisabled(Hint7.c_str());
+			}
 			ImGui::Checkbox("Freeze Rain Drops", &Monitor::FreezeRain);
 			ImGui::SeparatorText("Controls");
 			ImGui::Text("Increase / Decrease Time Of Day");
 			ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
 			ImGui::TextDisabled("Numpad * / -");
-			ImGui::Text("Toggle Stop Time");
-			ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
-			ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.TimeStop]);
-			ImGui::Text("Toggle Slow Motion");
-			ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
-			ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.SlowMo]);
-			ImGui::Text("Toggle GridShading");
-			ImGui::SameLine(ImGui::GetFontSize() * 14.70588f);
-			ImGui::TextDisabled(Databases::HotKeys[UserConfig::HotKeyFile.GridShading]);
 			ImGui::EndChild();
 			ImGui::EndTabItem();
 		}
@@ -697,6 +715,12 @@ void SadGUI::ShowCameraTool() {
 			{
 				Monitor::StopPlayerAnimation = true;
 			}
+			if (UserConfig::HotKeyFile.PlayAnim != 0) {
+				ImGui::SameLine();
+				std::string Hint = Databases::HotKeys[UserConfig::HotKeyFile.PlayAnim];
+				Hint = "(" + Hint + ")";
+				ImGui::TextDisabled(Hint.c_str());
+			}
 			ImGui::Checkbox("Loop", &Player::LoopAnimation);
 			ImGui::SeparatorText("Highlight");
 			ImGui::PushID(3999);
@@ -729,7 +753,30 @@ void SadGUI::ShowCameraTool() {
 			ImGui::Text("Immortality");
 			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
 			ImGui::Checkbox("##Immortality", &Monitor::MakePlayerImmortal);
-			ImGui::Text("Hurt Player");
+			ImGui::Text("NoClip");
+			if (UserConfig::HotKeyFile.NoClip != 0) {
+				ImGui::SameLine();
+				std::string Hint2 = Databases::HotKeys[UserConfig::HotKeyFile.NoClip];
+				Hint2 = "(" + Hint2 + +")";
+				ImGui::TextDisabled(Hint2.c_str());
+			}
+			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
+			ImGui::Checkbox("##NoClip", &Monitor::NoClip);
+			ImGui::SameLine(); 
+			ImGui::PushItemWidth(ImGui::GetFontSize() * 8.4f);
+			ImGui::SliderScalar("##NoClipSpeed", ImGuiDataType_Float, &Player::NoClipSens, &MinNoClipSpeed, &MaxNoClipSpeed, "%.2f");
+			ImGui::Text("Teleport");
+			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
+			if (ImGui::Button("Waypoint##TeleportToWaypoint"))
+			{
+				Monitor::TeleportToWaypoint = true;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Willis Tower"))
+			{
+				Monitor::TeleportToWillisTower = true;
+			}
+			/*ImGui::Text("Hurt");
 			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
 			if (ImGui::Button("InstaKill"))
 			{
@@ -739,6 +786,17 @@ void SadGUI::ShowCameraTool() {
 			if (ImGui::Button("Shove"))
 			{
 				Monitor::ShovePlayer = true;
+			}*/
+			ImGui::Text("Felony System");
+			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
+			if (ImGui::Button("Enable##FelonyEnable"))
+			{
+				Monitor::EnableFelony = true;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Disable##FelonyEnable"))
+			{
+				Monitor::DisableFelony = true;
 			}
 			ImGui::Text("Vigilante Mask");
 			ImGui::SameLine(ImGui::GetFontSize() * 8.8235f);
@@ -1211,7 +1269,6 @@ void SadGUI::ShowCameraTool() {
 				ImGui::EndCombo();
 			}
 			ImGui::PopItemWidth();
-			ImGui::PopItemWidth();
 			ImGui::Text("TimeStop");
 			ImGui::SameLine(ImGui::GetFontSize() * 11.7647f);
 			ImGui::PushItemWidth(ImGui::GetFontSize() * 5.88235f);
@@ -1244,6 +1301,44 @@ void SadGUI::ShowCameraTool() {
 						UserConfig::HotKeyFileToSave.SlowMo = i;
 					}
 					if (SelectedSlowMoHkey) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::PopItemWidth();
+			ImGui::Text("NoClip");
+			ImGui::SameLine(ImGui::GetFontSize() * 11.7647f);
+			ImGui::PushItemWidth(ImGui::GetFontSize() * 5.88235f);
+			if (ImGui::BeginCombo("##NoClipHKey", HotKeys::EditorNoClip))
+			{
+				for (int i = 0; i < Databases::HotKeys.size(); i++) {
+					bool SelectedNoClipHkey = (HotKeys::EditorNoClip == Databases::HotKeys[i]);
+					if (ImGui::Selectable(Databases::HotKeys[i], SelectedNoClipHkey)) {
+						UserConfig::SanatizeHotKeySelection(i);
+						HotKeys::EditorNoClip = Databases::HotKeys[i];
+						UserConfig::HotKeyFileToSave.NoClip = i;
+					}
+					if (SelectedNoClipHkey) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::PopItemWidth();
+			ImGui::Text("Play Animation");
+			ImGui::SameLine(ImGui::GetFontSize() * 11.7647f);
+			ImGui::PushItemWidth(ImGui::GetFontSize() * 5.88235f);
+			if (ImGui::BeginCombo("##PlayAnimHKey", HotKeys::EditorPlayAnim))
+			{
+				for (int i = 0; i < Databases::HotKeys.size(); i++) {
+					bool SelectedPlayAnimHkey = (HotKeys::EditorPlayAnim == Databases::HotKeys[i]);
+					if (ImGui::Selectable(Databases::HotKeys[i], SelectedPlayAnimHkey)) {
+						UserConfig::SanatizeHotKeySelection(i);
+						HotKeys::EditorPlayAnim = Databases::HotKeys[i];
+						UserConfig::HotKeyFileToSave.PlayAnim = i;
+					}
+					if (SelectedPlayAnimHkey) {
 						ImGui::SetItemDefaultFocus();
 					}
 				}

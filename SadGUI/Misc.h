@@ -5,6 +5,14 @@
 #define o_MouseDeltaX 0x94
 #define o_MouseSensY 0x124
 #define o_MouseSensX 0x120
+#define o_PlayerDirectionX 0x10
+#define o_PlayerDirectionY 0x14
+
+#define o_InputYawExtraSpeed 0xC0
+#define o_InputYawExtraSpeedAngleThreshold 0xC4
+#define o_InputDampDown 0xCC
+#define o_InputDampUp 0xC8 
+
 
 class Misc
 {
@@ -65,6 +73,15 @@ public:
 	typedef uintptr_t(*LoadCameraContext_t)(uintptr_t a1, uintptr_t a2);
 	inline static LoadCameraContext_t LoadCameraContext;
 
+	typedef uintptr_t(*UpdatePlayerPawn_t)(uintptr_t CPlayerPawn);
+	inline static UpdatePlayerPawn_t UpdatePlayerPawn;
+
+	typedef uintptr_t (*SetWaypoint_t)(uintptr_t a1, uintptr_t a2);
+	inline static SetWaypoint_t SetWaypoint;
+
+	typedef void (*EnableFelonySystem_t)(uintptr_t CFelonySystem, bool);
+	inline static EnableFelonySystem_t EnableFelonySystem;
+
 	static uintptr_t ExecuteFrameJob_Detour(uintptr_t a1, uintptr_t a2, uintptr_t a3);
 
 	static uint32_t FNV32(const char* path);
@@ -81,5 +98,9 @@ public:
 	static uintptr_t ProcessMouseInput_detour(uintptr_t a1, uintptr_t a2);
 	static uintptr_t ProcessMouseSmoothing_detour(uintptr_t a1, int* a2);
 	static uintptr_t LoadCameraContext_detour(uintptr_t a1, uintptr_t a2);
+	static uintptr_t UpdatePlayerPawn_detour(uintptr_t CPlayerPawn);
+	static uintptr_t SetWaypoint_detour(uintptr_t a1, uintptr_t a2);
+	static uintptr_t GetFelonySystem();
+	static void EnableFelonySystemMacro(bool Enabled);
 
 };

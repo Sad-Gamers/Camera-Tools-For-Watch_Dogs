@@ -33,32 +33,41 @@ void UserConfig::LoadHotKeys() {
         HotKeys::EditorTimeStop = Databases::HotKeys[HotKeyFile.TimeStop];
         HotKeys::EditorSlowMo = Databases::HotKeys[HotKeyFile.SlowMo];
         HotKeys::EditorHUD = Databases::HotKeys[HotKeyFile.HUD];
+        HotKeys::EditorNoClip = Databases::HotKeys[HotKeyFile.NoClip];
         HotKeys::EditorGridShading = Databases::HotKeys[HotKeyFile.GridShading];
         HotKeys::EditorTransition = Databases::HotKeys[HotKeyFile.Transition];
+        HotKeys::EditorPlayAnim = Databases::HotKeys[HotKeyFile.PlayAnim];
         HotKeys::GUI = Databases::HotKeyCodes[HotKeyFile.GUI];
         HotKeys::FreeCam = Databases::HotKeyCodes[HotKeyFile.FreeCam];
         HotKeys::TimeStop = Databases::HotKeyCodes[HotKeyFile.TimeStop];
         HotKeys::SlowMo = Databases::HotKeyCodes[HotKeyFile.SlowMo];
         HotKeys::HUD = Databases::HotKeyCodes[HotKeyFile.HUD];
+        HotKeys::NoClip = Databases::HotKeyCodes[HotKeyFile.NoClip];
         HotKeys::GridShading = Databases::HotKeyCodes[HotKeyFile.GridShading];
         HotKeys::Transition = Databases::HotKeyCodes[HotKeyFile.Transition];
+        HotKeys::PlayAnim = Databases::HotKeyCodes[HotKeyFile.PlayAnim];
 	}
 	else
 	{
         HotKeys::EditorGUI = Databases::HotKeys[1];
         HotKeys::EditorFreeCam = Databases::HotKeys[2];
-        HotKeys::EditorSlowMo = Databases::HotKeys[11];
-        HotKeys::EditorTimeStop = Databases::HotKeys[10];
-        HotKeys::EditorHUD = Databases::HotKeys[9];
+        HotKeys::EditorSlowMo = Databases::HotKeys[10];
+        HotKeys::EditorTimeStop = Databases::HotKeys[9];
+        HotKeys::EditorHUD = Databases::HotKeys[8];
+        HotKeys::EditorNoClip = Databases::HotKeys[4];
         HotKeys::EditorGridShading = Databases::HotKeys[13];
         HotKeys::EditorTransition = Databases::HotKeys[7];
+        HotKeys::EditorPlayAnim = Databases::HotKeys[11];
         HotKeys::GUI = Databases::HotKeyCodes[1];
         HotKeys::FreeCam = Databases::HotKeyCodes[2];
-        HotKeys::TimeStop = Databases::HotKeyCodes[11];
+        HotKeys::TimeStop = Databases::HotKeyCodes[9];
         HotKeys::SlowMo = Databases::HotKeyCodes[10];
-        HotKeys::HUD = Databases::HotKeyCodes[9];
+        HotKeys::HUD = Databases::HotKeyCodes[8];
+        HotKeys::NoClip = Databases::HotKeyCodes[4];
         HotKeys::Transition = Databases::HotKeyCodes[7];
-        HotKeyFileToSave = {1, 2, 9, 10, 8, 13, 7};
+        HotKeys::PlayAnim = Databases::HotKeyCodes[11];
+        HotKeyFile = {1, 2, 9, 10, 8, 4, 13, 7, 11};
+        HotKeyFileToSave = HotKeyFile;
 	}
 }
 
@@ -143,6 +152,9 @@ void UserConfig::SaveAndReloadHotFixConfig() {
     if (HotFixesFileToSave.FOVMultiplier < 0.75f) {
         HotFixesFileToSave.FOVMultiplier = 0.75f;
     }
+    if (HotFixesFileToSave.SlideLocking && !HotFixesFileToSave.BlowBack) {
+        HotFixesFileToSave.SlideLocking = false;
+    }
     fwrite(&HotFixesFileToSave, sizeof(HotFixesFileToSave), 1, UserHotFixConfig);
     fclose(UserHotFixConfig);
     LoadHotFixConfig();
@@ -172,6 +184,14 @@ void UserConfig::SanatizeHotKeySelection(BYTE SelectedHkey) {
     if (HotKeyFileToSave.Transition == SelectedHkey) {
         HotKeyFileToSave.Transition = 0;
         HotKeys::EditorTransition = "None";
+    }
+    if (HotKeyFileToSave.NoClip == SelectedHkey) {
+        HotKeyFileToSave.NoClip = 0;
+        HotKeys::EditorNoClip = "None";
+    }
+    if (HotKeyFileToSave.PlayAnim == SelectedHkey) {
+        HotKeyFileToSave.PlayAnim = 0;
+        HotKeys::EditorPlayAnim = "None";
     }
 }
 

@@ -29,6 +29,12 @@ bool Offsets::Initialize() {
 	if (GameVersion == 0)
 		return false;
 	if (GameVersion == 1) {
+		CFelonySystem = 0x3BBB5F0;
+		EnableFelonySystem = 0x144FFD0;
+		UpdateSkeletons = 0x372D80;
+		PostPartRecoil = 0x364440;
+		SetWaypoint = 0x17D7590;
+		UpdatePlayerPawn = 0x1B0AFE0;
 		MouseSensitivity = 0x3B8BF20;
 		LoadCameraContext = 0x176AE70;
 		ProcessMouseSmoothing = 0x15EC6C0;
@@ -84,9 +90,9 @@ bool Offsets::Initialize() {
 		CResourceManager = 0x3B593C0;
 		LoadDep = 0x1557A0;
 		RenderConfig = 0x3B6DD30;
-		PostAnimUpdateWrapper = 0xFDDE00;
-		//UnkRoutineWrapper = 0x803D90;
-		UnkRoutineWrapper = 0x9CD900;
+		//PostAnimUpdateWrapper = 0xFDDE00;
+		////UnkRoutineWrapper = 0x803D90;
+		//UnkRoutineWrapper = 0x9CD900;
 		PostAnimUpdate = 0xEBF510;
 		GetBulletsInClip = 0xD95880;
 		UpdateWeaponStatus = 0x184EF10;
@@ -103,6 +109,12 @@ bool Offsets::Initialize() {
 		ReleaseDOF = 132;
 	} 
 	if (GameVersion == 2) {
+		CFelonySystem = 0x3BF4850;
+		EnableFelonySystem = 0x15A06D0;
+		UpdateSkeletons = 0x1495140;
+		PostPartRecoil = 0x8FADC0;
+		SetWaypoint = 0x1926950;
+		UpdatePlayerPawn = 0x1C59A00;
 		MouseSensitivity = 0x3B72F30;
 		LoadCameraContext = 0x18BA870;
 		ProcessMouseSmoothing = 0x173CDC0;
@@ -158,9 +170,9 @@ bool Offsets::Initialize() {
 		CResourceManager = 0x3B6A560;
 		LoadDep = 0x4699E0;
 		RenderConfig = 0x3B8E0A0;
-		PostAnimUpdateWrapper = 0x112EAA0;
-		//UnkRoutineWrapper = 0x3141D0;
-		UnkRoutineWrapper = 0x595690;
+		//PostAnimUpdateWrapper = 0x112EAA0;
+		////UnkRoutineWrapper = 0x3141D0;
+		//UnkRoutineWrapper = 0x595690;
 		PostAnimUpdate = 0x1011430;
 		GetBulletsInClip = 0xEE77A0;
 		UpdateWeaponStatus = 0x199D930;
@@ -177,6 +189,12 @@ bool Offsets::Initialize() {
 		ReleaseDOF = 132;
 	}
 	if (GameVersion == 3) {
+		CFelonySystem = 0x3ABE698;
+		EnableFelonySystem = 0x13110D0;
+		PostPartRecoil = 0x92D460;
+		UpdateSkeletons = 0x945ED0;
+		SetWaypoint = 0x138FD10;
+		UpdatePlayerPawn = 0x1E37E60;
 		MouseSensitivity = 0x3A3F2E8;
 		LoadCameraContext = 0x1083190;
 		ProcessMouseSmoothing = 0x1049A60;
@@ -232,9 +250,9 @@ bool Offsets::Initialize() {
 		CResourceManager = 0x3A3A010;
 		LoadDep = 0x461AF0;
 		RenderConfig = 0x3A5E1D0;
-		PostAnimUpdateWrapper = 0x1854930;
-		//UnkRoutineWrapper = 0x2F8B80;
-		UnkRoutineWrapper = 0x533480;
+		//PostAnimUpdateWrapper = 0x1854930;
+		////UnkRoutineWrapper = 0x2F8B80;
+		//UnkRoutineWrapper = 0x533480;
 		PostAnimUpdate = 0x1837710;
 		GetBulletsInClip = 0x10E3330;
 		UpdateWeaponStatus = 0x1DDC6D0;
@@ -251,6 +269,12 @@ bool Offsets::Initialize() {
 		ReleaseDOF = 0x74;
 	}
 	if (GameVersion == 4) {
+		SetWaypoint = 0xD73A10;
+		CFelonySystem = 0x3B840D0;
+		EnableFelonySystem = 0x9E47C0;
+		PostPartRecoil = 0x1D633C0;
+		UpdateSkeletons = 0x1D70E70;
+		UpdatePlayerPawn = 0x10A8D60;
 		MouseSensitivity = 0x3BC94C0;
 		LoadCameraContext = 0xD03A40;
 		ProcessMouseSmoothing = 0xB80EB0;
@@ -306,9 +330,9 @@ bool Offsets::Initialize() {
 		CResourceManager = 0x3BC2190;
 		LoadDep = 0x18C7F50;
 		RenderConfig = 0x3BE2F60;
-		PostAnimUpdateWrapper = 0x5632A0;
-		//UnkRoutineWrapper = 0x177C110;
-		UnkRoutineWrapper = 0x19EC660;
+		//PostAnimUpdateWrapper = 0x5632A0;
+		////UnkRoutineWrapper = 0x177C110;
+		//UnkRoutineWrapper = 0x19EC660;
 		PostAnimUpdate = 0x4264B0;
 		GetBulletsInClip = 0x2FC820;
 		UpdateWeaponStatus = 0xDECC90;

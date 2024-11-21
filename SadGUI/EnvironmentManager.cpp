@@ -37,6 +37,14 @@ void EnvironmentManager::UpdateTimeOfDay() {
 		MilitaryTimeHour = Hour;
 		MilitaryTimeMinute = Minute;
 	}
+	if (GetEnvironmentEventsManager()) {
+		int Weather = *(int*)(GetEnvironmentEventsManager() + 0x278);
+		for (int i = 0; i < Databases::EnvironmentPresets.size();  i++) {
+			if (Misc::GetCRCFromString(Databases::EnvironmentPresets[i]) == Weather) {
+				CurrentWeatherPreset = Databases::EnvironmentPresets[i];
+			}
+		}
+	}
 }
 
 void EnvironmentManager::IncreaseTimeOfDay(float DeltaTime) {

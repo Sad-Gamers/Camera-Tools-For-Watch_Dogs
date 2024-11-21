@@ -1,6 +1,7 @@
 #include "CameraManager.h"
 #include "EntityManager.h"
 #include "CameraToolMonitor.h"
+#include "Player.h"
 
 void CameraManager::Initialize() {
 	Imagebase = Misc::Imagebase;
@@ -159,6 +160,12 @@ uintptr_t CameraManager::UpdateCamera_Detour(uintptr_t CCameraManager, uintptr_t
 			else {
 				*(float*)(CCameraManager + 108) = PreviousAdjustedFOV;
 			}
+		}
+
+		if (Monitor::NoClip) {
+			Player::CamRotation.x = *(float*)(CCameraManager + 96);
+			Player::CamRotation.y = *(float*)(CCameraManager + 100);
+			Player::CamRotation.z = *(float*)(CCameraManager + 104);
 		}
 
 		if (FreeCam) {

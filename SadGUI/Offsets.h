@@ -6,6 +6,8 @@ class Offsets
 public:
 	static int CheckGameVersion();
 	static bool Initialize(); 
+	inline static uintptr_t EnableFelonySystem;
+	inline static uintptr_t CFelonySystem;
 	inline static uintptr_t MouseSensitivity;
 	inline static uintptr_t LoadCameraContext;
 	inline static uintptr_t ProcessMouseSmoothing;
@@ -61,8 +63,6 @@ public:
 	inline static uintptr_t CResourceManager;
 	inline static uintptr_t LoadDep;
 	inline static uintptr_t RenderConfig;
-	inline static uintptr_t PostAnimUpdateWrapper;
-	inline static uintptr_t UnkRoutineWrapper;
 	inline static uintptr_t PostAnimUpdate;
 	inline static uintptr_t GetBulletsInClip;
 	inline static uintptr_t UpdateWeaponStatus;
@@ -73,6 +73,10 @@ public:
 	inline static uintptr_t GetNumberOfPlayers;
 	inline static uintptr_t UpdateMouseCameraLook;
 	inline static uintptr_t UpdatePlayerLook;
+	inline static uintptr_t UpdatePlayerPawn;
+	inline static uintptr_t SetWaypoint;
+	inline static uintptr_t PostPartRecoil;
+	inline static uintptr_t UpdateSkeletons;
 	inline static BYTE oUpdatePlayerLook;
 	inline static BYTE StopPlayerAnimation;
 	inline static BYTE ResumePlayerAnimation;

@@ -78,8 +78,7 @@ void Actor::UpdateAnimation()
 
 void Actor::StopAnimation()
 {
-	EntityManager::PlayAnimation(ID,
-		"move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false);
+	EntityManager::StopAnimation(ID);
 }
 
 

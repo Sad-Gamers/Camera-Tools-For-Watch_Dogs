@@ -1,4 +1,5 @@
 #include "Misc.h"
+#include "Player.h"
 #include "DXHook.h"
 #include "CameraManager.h"
 #include "EntityManager.h"
@@ -7,6 +8,7 @@
 
 void Misc::Initialize() {
     RemoveVMProtect();
+	EnableFelonySystem = (EnableFelonySystem_t)(Imagebase + Offsets::EnableFelonySystem);
 	MakeNomadString = (MakeNomadString_t)(Imagebase + Offsets::BuildNomadString);
     SendShowOrHideAllUIEvent = (SendShowOrHideAllUIEvent_t)(Imagebase + Offsets::SendShowOrHideAllUIEvent);
     GetMinStepTime = (GetMinStepTime_t)(Imagebase + Offsets::GetMinStepTime);
@@ -20,6 +22,8 @@ void Misc::Initialize() {
     ProcessMouseInput = (ProcessMouseInput_t)(Imagebase + Offsets::ProcessMouseInput);
     ProcessMouseSmoothing = (ProcessMouseSmoothing_t)(Imagebase + Offsets::ProcessMouseSmoothing);
     LoadCameraContext = (LoadCameraContext_t)(Imagebase + Offsets::LoadCameraContext);
+    UpdatePlayerPawn = (UpdatePlayerPawn_t)(Imagebase + Offsets::UpdatePlayerPawn);
+    SetWaypoint = (SetWaypoint_t)(Imagebase + Offsets::SetWaypoint);
     MH_Initialize();
     MH_CreateHook((LPVOID)(Imagebase + Offsets::GetMinStepTime), &GetMinStepTime_Detour, reinterpret_cast<LPVOID*>(&GetMinStepTime));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::GetMinStepTime));
@@ -34,6 +38,12 @@ void Misc::Initialize() {
     MH_EnableHook((LPVOID)(Imagebase + Offsets::ProcessMouseSmoothing));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::LoadCameraContext), &LoadCameraContext_detour, reinterpret_cast<LPVOID*>(&LoadCameraContext));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::LoadCameraContext));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdatePlayerPawn), &UpdatePlayerPawn_detour, reinterpret_cast<LPVOID*>(&UpdatePlayerPawn));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::UpdatePlayerPawn));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdatePlayerPawn), &UpdatePlayerPawn_detour, reinterpret_cast<LPVOID*>(&UpdatePlayerPawn));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::UpdatePlayerPawn));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::SetWaypoint), &SetWaypoint_detour, reinterpret_cast<LPVOID*>(&SetWaypoint));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::SetWaypoint));
 }
 
 void Misc::RemoveVMProtect() {
@@ -51,6 +61,18 @@ void Misc::RemoveVMProtect() {
     VirtualProtect(LPVOID(Imagebase + Offsets::UpdatePlayerLook), 64, PAGE_EXECUTE_READWRITE, &oldProtect);
 }
 
+uintptr_t Misc::UpdatePlayerPawn_detour(uintptr_t CPlayerPawn) {
+    Player::PlayerDirectionX = *(float*)(CPlayerPawn + o_PlayerDirectionX);
+    Player::PlayerDirectionY = *(float*)(CPlayerPawn + o_PlayerDirectionY);
+    return UpdatePlayerPawn(CPlayerPawn);
+}
+
+uintptr_t Misc::SetWaypoint_detour(uintptr_t a1, uintptr_t a2) {
+    Player::WaypointPosition.x = *(float*)(a2 + 116);
+    Player::WaypointPosition.y = *(float*)(a2 + 120);
+    Player::WaypointPosition.z = *(float*)(a2 + 124) + 40.0f;
+    return SetWaypoint(a1, a2);
+}
 
 bool Misc::GPSConfigInit_detour(uintptr_t CGPSConfig, uintptr_t PawnPlayer) {
     //ImVec2 DisplaySize = ImGui::GetIO().DisplaySize;
@@ -107,10 +129,10 @@ uintptr_t Misc::ProcessMouseSmoothing_detour(uintptr_t a1, int* a2) {
 uintptr_t Misc::LoadCameraContext_detour(uintptr_t a1, uintptr_t a2) {
     uintptr_t Result = LoadCameraContext(a1, a2);
     if (DisableRotSpeedCap) {
-        *(float*)(a1 + 0xC0) = 800.0f; //fInputYawExtraSpeed
-        *(float*)(a1 + 0xC4) = 0.0f; //fInputYawExtraSpeedAngleThreshold
-        *(float*)(a1 + 0xC8) = 0.0f; //fInputDampDown
-        *(float*)(a1 + 0xCC) = 0.0f; //fInputDampUp
+        *(float*)(a1 + o_InputYawExtraSpeed) = 800.0f; //
+        *(float*)(a1 + o_InputYawExtraSpeedAngleThreshold) = 0.0f; //
+        //*(float*)(a1 + o_InputDampDown) = 0.0f; //
+        //*(float*)(a1 + o_InputDampUp) = 0.0f; //
         //*(float*)(a1 + 0xB8) = 120.0f; //fInputPitchSpeed
         //*(float*)(a1 + 0xBC) = 120.0f; //fInputYawSpeed
     }
@@ -205,6 +227,16 @@ bool Misc::IsOnline() {
         return true;
     else
         return false;
+}
+
+uintptr_t Misc::GetFelonySystem() {
+    return ((*(uintptr_t*)((Imagebase + Offsets::CFelonySystem)) + 0x0));
+}
+
+void Misc::EnableFelonySystemMacro(bool Enabled) {
+    if (GetFelonySystem()) {
+        EnableFelonySystem(GetFelonySystem(), Enabled);
+    }
 }
 
 uintptr_t Misc::GetCPhysWorld() {

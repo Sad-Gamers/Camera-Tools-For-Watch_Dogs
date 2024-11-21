@@ -21,6 +21,7 @@ public:
 	inline static DirectX::XMFLOAT3 TranPosDelta;
 	inline static DirectX::XMFLOAT3 TranRotDelta;
 	inline static DirectX::XMFLOAT3 TranDOFDelta;
+	inline static DirectX::XMFLOAT3 TranStartAngle;
 	inline static float TranFOVDelta;
 	inline static float DestinationCameraFOV;
 	inline static float TranSlope;

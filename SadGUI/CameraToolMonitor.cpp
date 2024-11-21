@@ -51,6 +51,11 @@ void Monitor::MonitorChanges() {
 		UpdateRenderConfig = false;
 		RevertRenderConfig = false;
 		MakePlayerImmortal = false;
+		NoClip = false;
+		TeleportToWaypoint = false;
+		TeleportToWillisTower = false;
+		EnableFelony = false;
+		DisableFelony = false;
 		if (Actor::IsPresent())
 			Actor::Remove();
 		CinematicLightingManager::RemoveAllCinematicLights();
@@ -175,6 +180,33 @@ void Monitor::MonitorChanges() {
 		}		
 	}
 
+	if (TeleportToWaypoint) {
+		if (NoClip)
+			NoClip = false;
+			Player::TeleportToWaypoint();
+		TeleportToWaypoint = false;
+	}
+
+	if (TeleportToWillisTower) {
+		if (NoClip)
+			NoClip = false;
+		Player::TeleportToWillisTower();
+		TeleportToWillisTower = false;
+	}
+
+
+	if (NoClip != Player::NoClipMode) {
+		if (NoClip) {
+			Player::BeginNoClip();
+		}
+		else {
+			Player::EndNoClip();
+		}
+	}
+
+	if (Player::NoClipMode) {
+		Player::UpdateNoClip();
+	}
 
 	if (MakePlayerImmortal != Player::IsImmortal) {
 		if (MakePlayerImmortal) {
@@ -187,6 +219,17 @@ void Monitor::MonitorChanges() {
 		}
 	}
 
+	if (EnableFelony) {
+		Misc::EnableFelonySystemMacro(true);
+		EnableFelony = false;
+	}
+		
+
+	if (DisableFelony) {
+		Misc::EnableFelonySystemMacro(false);
+		DisableFelony = false;
+	}
+		
 
 	if (UpdateWeatherPreset) {
 		EnvironmentManager::SetWeatherPreset();
@@ -413,7 +456,9 @@ void Monitor::ProccessInput() {
 	static bool ToggleUIKey = false;
 	static bool ToggleFreeCamKey = false;
 	static bool ToggleGridShadingKey = false;
+	static bool ToggleNoClipKey = false;
 	static bool TransitionKey = false;
+	static bool PlayAnimKey = false;
 
 	if (FreeCam && CameraManager::FreeCamInit && CameraManager::FreeCamMode == "Unbounded"
 		&& !CameraManager::CinematicTransition) {
@@ -484,6 +529,8 @@ void Monitor::ProccessInput() {
 
 	if (GetAsyncKeyState(HotKeys::HUD) < 0 && !ToggleUIKey)
 		HideUI = !HideUI;
+	if (GetAsyncKeyState(HotKeys::NoClip) < 0 && !ToggleNoClipKey)
+		NoClip = !NoClip;
 	if (GetAsyncKeyState(HotKeys::SlowMo) < 0 && !ToggleSlowMotionKey)
 		SlowMo = !SlowMo;
 	if (GetAsyncKeyState(HotKeys::TimeStop) < 0 && !ToggleTimeStopKey)
@@ -492,7 +539,9 @@ void Monitor::ProccessInput() {
 		FreeCam = !FreeCam;
 	if (GetAsyncKeyState(HotKeys::GridShading) < 0 && !ToggleGridShadingKey)
 		GridShading = !GridShading;
-
+	if (GetAsyncKeyState(HotKeys::PlayAnim) < 0 && !PlayAnimKey)
+		UpdatePlayerAnimation = true;
+	
 	if (GetAsyncKeyState(HotKeys::Transition) < 0 && !TransitionKey) {
 		if(CameraManager::CinematicTransition)
 			CameraManager::CinematicTransition = false;
@@ -514,9 +563,11 @@ void Monitor::ProccessInput() {
 	}
 
 	TransitionKey = GetKeyState(HotKeys::Transition) < 0;
+	PlayAnimKey = GetKeyState(HotKeys::PlayAnim) < 0;
 	ToggleUIKey = GetKeyState(HotKeys::HUD) < 0;
 	ToggleSlowMotionKey = GetKeyState(HotKeys::SlowMo) < 0;
 	ToggleTimeStopKey = GetKeyState(HotKeys::TimeStop) < 0;
 	ToggleFreeCamKey = GetKeyState(HotKeys::FreeCam) < 0;
 	ToggleGridShadingKey = GetKeyState(HotKeys::GridShading) < 0;
+	ToggleNoClipKey = GetKeyState(HotKeys::NoClip) < 0;
 }

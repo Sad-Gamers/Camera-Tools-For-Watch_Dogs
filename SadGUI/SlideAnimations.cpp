@@ -1,21 +1,22 @@
 #include "SlideAnimations.h"
 #include "CameraManager.h"
+#include "Actor.h"
 #include "Databases.h"
 
 
 void SlideAnimations::Initialize() {
     uintptr_t Imagebase = Misc::Imagebase;
-    UnkRoutineWrapper = (UnkRoutineWrapper_t)(Imagebase + Offsets::UnkRoutineWrapper);
-    PostAnimUpdateWrapper = (PostAnimUpdateWrapper_t)(Imagebase + Offsets::PostAnimUpdateWrapper);
     PostAnimUpdate = (PostAnimUpdate_t)(Imagebase + Offsets::PostAnimUpdate);
     GetBulletsInClip = (GetBulletsInClip_t)(Imagebase + Offsets::GetBulletsInClip);
     HasItemInMainHand = (HasItemInMainHand_t)(Imagebase + Offsets::HasItemInMainHand);
     UpdateWeaponStatus = (UpdateWeaponStatus_t)(Imagebase + Offsets::UpdateWeaponStatus);
     GetEquippedWeaponGrip = (GetEquippedWeaponGrip_t)(Imagebase + Offsets::GetEquippedWeaponGrip);
-    MH_CreateHook((LPVOID)(Imagebase + Offsets::PostAnimUpdateWrapper), &PostAnimUpdateWrapper_Detour, reinterpret_cast<LPVOID*>(&PostAnimUpdateWrapper));
-    MH_EnableHook((LPVOID)(Imagebase + Offsets::PostAnimUpdateWrapper));
-    MH_CreateHook((LPVOID)(Imagebase + Offsets::UnkRoutineWrapper), &UnkRoutineWrapper_Detour, reinterpret_cast<LPVOID*>(&UnkRoutineWrapper));
-    MH_EnableHook((LPVOID)(Imagebase + Offsets::UnkRoutineWrapper));
+    PostPartRecoil = (Blowback_t)(Imagebase + Offsets::PostPartRecoil);
+    UpdateSkeletons = (UnkAni_t)(Imagebase + Offsets::UpdateSkeletons);
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::PostPartRecoil), &PostPartRecoil_detour, reinterpret_cast<LPVOID*>(&PostPartRecoil));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::PostPartRecoil));
+    MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdateSkeletons), &UpdateSkeletons_detour, reinterpret_cast<LPVOID*>(&UpdateSkeletons));
+    MH_EnableHook((LPVOID)(Imagebase + Offsets::UpdateSkeletons));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::PostAnimUpdate), &PostAnimUpdate_Detour, reinterpret_cast<LPVOID*>(&PostAnimUpdate));
     MH_EnableHook((LPVOID)(Imagebase + Offsets::PostAnimUpdate));
     MH_CreateHook((LPVOID)(Imagebase + Offsets::UpdateWeaponStatus), &UpdateWeaponStatus_detour, reinterpret_cast<LPVOID*>(&UpdateWeaponStatus));
@@ -27,18 +28,33 @@ uintptr_t SlideAnimations::GetWeaponMechanicComponent() {
 }
 
 //Blowbackfix Begin
-uintptr_t SlideAnimations::UnkRoutineWrapper_Detour(uintptr_t a1, float DeltaTime) {
-    uintptr_t Result = UnkRoutineWrapper(a1, DeltaTime);
-    if (GetWeaponMechanicComponent() && PatchBlowBack && PostUpdate) {
-        PostAnimUpdateWrapper(GetWeaponMechanicComponent(), DeltaTime);
-        PostUpdate = false;
+bool SlideAnimations::PostPartRecoil_detour(uintptr_t* a1, uintptr_t a2, __m128* a3) {
+    if (PatchBlowBack) {
+        uintptr_t Target_1 = 32 * a2;
+        uintptr_t Target_2 = a1[23];
+        __m128 Translation = *a3;
+        std::lock_guard<std::mutex> lock(BlowbackEventsMutex);
+        BlowbackEvents.push_back(BlowbackEvent(Target_1, Target_2, Translation));
     }
-    return Result;
+    return 1;
 }
 
-uintptr_t SlideAnimations::PostAnimUpdateWrapper_Detour(uintptr_t CWeaponMechanicComponent, float DeltaTime) {
-    PostUpdate = true;
-    return 0;
+uintptr_t* SlideAnimations::UpdateSkeletons_detour(uintptr_t* a1, uintptr_t a2) {
+    uintptr_t* Result = UpdateSkeletons(a1, a2);
+    if (PatchBlowBack) {
+        std::lock_guard<std::mutex> lock(BlowbackEventsMutex);
+        for (int i = 0; i < BlowbackEvents.size(); i++)
+        {
+            uintptr_t Target_1 = 32 * a2;
+            uintptr_t Target_2 = a1[2];
+            if (BlowbackEvents[i].Target_1 == Target_1 && BlowbackEvents[i].Target_2 == Target_2) {
+                *(__m128*)(Target_1 + Target_2 + 16) = BlowbackEvents[i].Translation;
+                BlowbackEvents.erase(BlowbackEvents.begin() + i);
+            }
+        }
+    }
+
+    return Result;
 }
 //Blowbackfix End
 
@@ -53,6 +69,7 @@ void SlideAnimations::PatchMissingSlideBone(uintptr_t CWeaponMechanicComponent) 
     //    *(float*)(CWeaponMechanicComponent + 0x2E0) = 0.102064f;
     //}
 }
+
 //Slide Locking Begin
 void SlideAnimations::DeleteAllSlideLockEvents() {
     SlideLockEvents = {};
@@ -76,10 +93,12 @@ uintptr_t SlideAnimations::PostAnimUpdate_Detour(uintptr_t CWeaponMechanicCompon
 }
 
 uintptr_t SlideAnimations::UpdateWeaponStatus_detour(uintptr_t CPlayerPawnDriverImplementation) {
+    if(!Actor::IsPresent())
+        CPlayerPawnDriverImplementationCache = CPlayerPawnDriverImplementation;
     if (SlideLocking) {
-        LocalPlayerBulletsInClip = GetBulletsInClip(*(uintptr_t*)(CPlayerPawnDriverImplementation + 0x158));
-        LocalPlayerHasItemInMainHand = HasItemInMainHand(*(uintptr_t*)(CPlayerPawnDriverImplementation + 0x158));
-        LocalPlayerWeaponGrip = GetEquippedWeaponGrip(*(uintptr_t*)(CPlayerPawnDriverImplementation + 0x158));
+        LocalPlayerBulletsInClip = GetBulletsInClip(*(uintptr_t*)(CPlayerPawnDriverImplementationCache + 0x158));
+        LocalPlayerHasItemInMainHand = HasItemInMainHand(*(uintptr_t*)(CPlayerPawnDriverImplementationCache + 0x158));
+        LocalPlayerWeaponGrip = GetEquippedWeaponGrip(*(uintptr_t*)(CPlayerPawnDriverImplementationCache + 0x158));
         UpdateAllSlideLockEvents();
     }
     return UpdateWeaponStatus(CPlayerPawnDriverImplementation);

@@ -46,7 +46,7 @@ void EntityManager::PlayAnimation(uint64_t TargetEntity, const char* Anim, bool 
 
 void EntityManager::StopAnimation(uint64_t TargetEntity) {
 	if (TargetEntity) 
-		RequestDominoAnimationState(TargetEntity, "move/decisiontrees/vehicles/pawn_generic_vehicle_approach.move.bin", false, 0, -1);
+		RequestDominoAnimationState(TargetEntity, "move/decisiontrees/07_pills/alone/07_alonepickup.move.bin", false, 0, -1);
 }
 
 void EntityManager::ChangeGraphicKit(uint64_t TargetEntity, const char* Model) {

@@ -29,4 +29,6 @@ public:
 	inline static float MinSpeed = 0.05f;
 	inline static float MaxSpeed = 8;
 	inline static float FontSize = 17;
+	inline static float MinNoClipSpeed = 0;
+	inline static float MaxNoClipSpeed = 50;
 };

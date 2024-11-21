@@ -63,4 +63,10 @@ public:
 	inline static bool RemoveControl;
 	inline static bool RestoreControlEvent;
 
+	inline static bool NoClip;
+	inline static bool TeleportToWaypoint;
+	inline static bool TeleportToWillisTower;
+	inline static bool EnableFelony;
+	inline static bool DisableFelony;
+
 };
