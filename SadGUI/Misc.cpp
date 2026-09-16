@@ -49,18 +49,13 @@ void Misc::Initialize() {
 void Misc::RemoveVMProtect() {
     DWORD oldProtect = 0;
     auto ntdll = GetModuleHandleA("ntdll.dll");
+    BYTE callcode = ((BYTE*)GetProcAddress(ntdll, "NtQuerySection"))[4] - 1;
+    BYTE restore[] = { 0x4C, 0x8B, 0xD1, 0xB8, callcode };
     auto nt_vp = (BYTE*)GetProcAddress(ntdll, "NtProtectVirtualMemory");
-    auto nt_vp_offset = (uintptr_t)nt_vp - (uintptr_t)ntdll + 4;
-    char nt_vp_syscall;
-
-    std::ifstream infile("C:\\Windows\\System32\\ntdll.dll", std::ios::binary);
-    infile.seekg(nt_vp_offset);
-    infile.get(nt_vp_syscall);
-
-    BYTE restore[] = { 0x4C, 0x8B, 0xD1, 0xB8, nt_vp_syscall };
     VirtualProtect(nt_vp, sizeof(restore), PAGE_EXECUTE_READWRITE, &oldProtect);
     memcpy(nt_vp, restore, sizeof(restore));
     VirtualProtect(nt_vp, sizeof(restore), oldProtect, &oldProtect);
+
     VirtualProtect(LPVOID(Imagebase + Offsets::UpdateAnimations), 64, PAGE_EXECUTE_READWRITE, &oldProtect);
     VirtualProtect(LPVOID(Imagebase + Offsets::GridShadingOnPause), 64, PAGE_EXECUTE_READWRITE, &oldProtect);
     VirtualProtect(LPVOID(Imagebase + Offsets::DepthOfFieldCondition), 64, PAGE_EXECUTE_READWRITE, &oldProtect);
